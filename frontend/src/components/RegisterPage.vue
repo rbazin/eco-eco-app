@@ -1,8 +1,8 @@
 <template>
-  <div class="register-page is-fullheight">
+  <div class="register-page">
     <div class="columns is-mobile is-centered">
       <div class="column is-6">
-        <img src="../assets/set_1/1.png" alt="Eco-Eco Logo" width="275" />
+        <img src="../assets/set_1/1.png" alt="Eco-Eco Logo" />
       </div>
     </div>
 
@@ -10,7 +10,7 @@
     <p class="subtitle has-text-centered is-3">
       Please enter your details to continue
     </p>
-    <form @submit.prevent="login">
+    <form @submit.prevent="register">
       <div class="field">
         <label class="label">Username</label>
         <div class="control">
@@ -34,8 +34,19 @@
         </div>
       </div>
       <div class="field">
+        <label class="label">Confirm password</label>
         <div class="control">
-          <button class="button is-primary">Login</button>
+          <input
+            class="input"
+            type="password"
+            placeholder="Confirm password"
+            v-model="confirmPassword"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <div class="control is-right">
+          <button class="button is-primary">Register</button>
         </div>
       </div>
     </form>
@@ -49,6 +60,7 @@ export default {
     return {
       username: "",
       password: "",
+      confirmPassword: "",
     };
   },
   methods: {
@@ -56,6 +68,7 @@ export default {
       this.$store.dispatch("register", {
         username: this.username,
         password: this.password,
+        confirmPassword: this.confirmPassword,
       });
     },
   },
