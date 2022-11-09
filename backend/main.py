@@ -33,6 +33,7 @@ def load_user(user_id):
 @app.route("/login", methods=['POST', 'GET'])
 @cross_origin()
 def login():
+    response_object = {'status': 'success'}
     if request.method == 'POST':
         data=request.get_json()
         print(data)
@@ -53,7 +54,7 @@ def login():
             return jsonify("OK")
 
         """
-        return
+        return jsonify(response_object)
 
 """
 @app.route("/home")
