@@ -43,7 +43,7 @@
       </div>
       <div class="field">
         <div class="control has-text-centered">
-          <button class="button is-primary">Login</button>
+          <button @click="this.Login()" class="button is-primary">Login</button>
         </div>
       </div>
     </form>
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "LoginPage",
   data() {
@@ -68,7 +69,26 @@ export default {
     };
   },
   methods: {
-    login() {},
+    // Login function with axios
+    login() {
+      axios
+        .post("http://localhost:3000/api/login", {
+          // call to the backend
+          username: this.username,
+          password: this.password,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.data.status === "success") {
+            // Store the user id in the store
+            this.$store.commit("setUserId", response.data.user.id);
+            this.$router.push("/home"); // Redirect to home page
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
