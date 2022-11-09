@@ -80,8 +80,8 @@ export default {
         .then((response) => {
           console.log(response);
           if (response.data.status === "success") {
-            // Store the user id in the store
-            this.$store.commit("setUserId", response.data.user.id);
+            // Store the user id AND other information in the user store (Pinia)
+            this.$store.commit("setUserId", response.data.user.id); // to be changed
             this.$router.push("/home"); // Redirect to home page
           }
         })
