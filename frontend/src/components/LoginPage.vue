@@ -7,34 +7,34 @@
     <h1 class="title is-1 has-text-centered">Login</h1>
     <p class="subtitle has-text-centered is-3">Please login to continue</p>
     <form @submit.prevent="login">
-      <div class="field columns is-mobile px-5">
-        <figure class="column is-3 has-text-centered">
-          <img
-            src="../assets/set_1/u.png"
-            alt="User login icon"
-            class="image is-48x48"
-          />
-        </figure>
-        <div class="control column">
+      <div class="field px-5">
+        <div class="control is-vcentered columns is-mobile">
+          <figure class="column is-offset-2 is-narrow">
+            <img
+              src="../assets/set_1/u.png"
+              alt="User login icon"
+              class="image is-48x48"
+            />
+          </figure>
           <input
-            class="input"
+            class="input column is-6"
             type="text"
             placeholder="Username"
             v-model="username"
           />
         </div>
       </div>
-      <div class="field columns is-mobile px-5">
-        <figure class="column is-3 has-text-centered">
-          <img
-            src="../assets/set_1/9.png"
-            alt="User login icon"
-            class="image is-48x48"
-          />
-        </figure>
-        <div class="control column">
+      <div class="field px-5">
+        <div class="control mb-5 is-vcentered columns is-mobile">
+          <figure class="column is-offset-2 is-narrow">
+            <img
+              src="../assets/set_1/9.png"
+              alt="User login icon"
+              class="image is-48x48"
+            />
+          </figure>
           <input
-            class="input"
+            class="input column is-6"
             type="password"
             placeholder="Password"
             v-model="password"
@@ -60,8 +60,16 @@
 
 <script>
 import axios from "axios";
+import { userStore } from "../stores/userStore.js";
+
 export default {
   name: "LoginPage",
+  setup() {
+    const store = userStore();
+    return {
+      store,
+    };
+  },
   data() {
     return {
       username: "",
@@ -80,7 +88,13 @@ export default {
         .then((response) => {
           console.log(response);
           if (response.data.status === "success") {
-            // We probably need to send user information somewhere or store it somewhere on client so that it can be used later
+            // Stores data about the user that will be needed everywhere in the user store
+            this.store.login(
+              response.data.userId,
+              response.data.userName,
+              response.data.userDroplets,
+              response.data.userStreak
+            );
             this.$router.push("/home"); // Redirect to home page
           }
         })
