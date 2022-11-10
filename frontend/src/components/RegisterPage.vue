@@ -1,43 +1,57 @@
 <template>
-  <div class="register-page">
-    <div class="columns is-mobile is-centered">
-      <div class="column is-6">
-        <img src="../assets/set_1/1.png" alt="Eco-Eco Logo" />
-      </div>
-    </div>
+  <div class="login-page is-fullheight">
+    <figure class="content has-text-centered mb-0">
+      <img src="../assets/set_1/1.png" alt="Eco-Eco Logo" width="200" />
+    </figure>
 
     <h1 class="title is-1 has-text-centered">Register</h1>
-    <p class="subtitle has-text-centered is-3">
-      Please enter your details to continue
-    </p>
+    <p class="subtitle has-text-centered is-3">Please register to continue</p>
     <form @submit.prevent="register">
-      <div class="field">
-        <label class="label">Username</label>
-        <div class="control">
+      <div class="field px-5">
+        <div class="control is-vcentered columns is-mobile">
+          <figure class="column is-offset-2 is-narrow">
+            <img
+              src="../assets/set_1/u.png"
+              alt="User login icon"
+              class="image is-48x48"
+            />
+          </figure>
           <input
-            class="input"
+            class="input column is-6"
             type="text"
             placeholder="Username"
             v-model="username"
           />
         </div>
       </div>
-      <div class="field">
-        <label class="label">Password</label>
-        <div class="control">
+      <div class="field px-5">
+        <div class="control mb-5 is-vcentered columns is-mobile">
+          <figure class="column is-offset-2 is-narrow">
+            <img
+              src="../assets/set_1/9.png"
+              alt="User login icon"
+              class="image is-48x48"
+            />
+          </figure>
           <input
-            class="input"
+            class="input column is-6"
             type="password"
             placeholder="Password"
             v-model="password"
           />
         </div>
       </div>
-      <div class="field">
-        <label class="label">Confirm password</label>
-        <div class="control">
+      <div class="field px-5">
+        <div class="control mb-5 is-vcentered columns is-mobile">
+          <figure class="column is-offset-2 is-narrow">
+            <img
+              src="../assets/set_1/9.png"
+              alt="User login icon"
+              class="image is-48x48"
+            />
+          </figure>
           <input
-            class="input"
+            class="input column is-6"
             type="password"
             placeholder="Confirm password"
             v-model="confirmPassword"
@@ -45,17 +59,29 @@
         </div>
       </div>
       <div class="field">
-        <div class="control is-right">
-          <button class="button is-primary">Register</button>
+        <div class="control has-text-centered">
+          <button @click="this.register()" class="button is-primary">
+            Register
+          </button>
         </div>
       </div>
     </form>
+    <img class="is-image" src="../assets/set_1/divider.png" />
     <img class="is-image" src="../assets/set_1/8.png" />
   </div>
 </template>
 <script>
+import axios from "axios";
+import { userStore } from "../stores/userStore";
+
 export default {
   name: "RegisterPage",
+  setup() {
+    const store = userStore();
+    return {
+      store,
+    };
+  },
   data() {
     return {
       username: "",
@@ -65,11 +91,22 @@ export default {
   },
   methods: {
     register() {
-      this.$store.dispatch("register", {
-        username: this.username,
-        password: this.password,
-        confirmPassword: this.confirmPassword,
-      });
+      if (this.password !== this.confirmPassword) {
+        alert("Passwords do not match");
+        return;
+      }
+      axios
+        .post("http://localhost:3000/api/users", {
+          username: this.username,
+          password: this.password,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.push("/login");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };
