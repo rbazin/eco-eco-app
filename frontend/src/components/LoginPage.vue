@@ -70,9 +70,9 @@ export default {
   },
   methods: {
     // Login function with axios
-    login() {
+    Login() {
       axios
-        .post("http://localhost:3000/api/login", {
+        .post("http://localhost:5000/api/login", {
           // call to the backend
           username: this.username,
           password: this.password,

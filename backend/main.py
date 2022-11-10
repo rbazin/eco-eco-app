@@ -5,8 +5,9 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+app.config.from_object(__name__)
 
-CORS(app)# CORS allowed for all domains on all routes
+CORS(app, resources={r"/api/*": {"origins": "*"}})# CORS allowed for all domains on all routes
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -30,7 +31,7 @@ def load_user(user_id):
     # since the user_id is just the primary key of our user table, use it in the query for the user
     return User.query.get(int(user_id))
 
-@app.route("/login", methods=['POST', 'GET'])
+@app.route("/api/login", methods=['POST', 'GET'])
 @cross_origin()
 def login():
     response_object = {'status': 'success'}
@@ -100,3 +101,5 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 """
+if __name__=="__main__":
+    app.run(debug=True)
