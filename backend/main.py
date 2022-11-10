@@ -37,44 +37,38 @@ def login():
     response_object = {'status': 'success'}
     if request.method == 'POST':
         data=request.get_json()
-        print(data)
-        """
-        name = request.form.get('username')
-        password = request.form.get('password')
+        name = data.get('username')
+        password = data.get('password')
 
         
         user = User.query.filter_by(name=name).first()
 
         if not user or not check_password_hash(user.password, password): 
-            flash('Pease check your login details and try again.')
-            return jsonify("NOT OK") # if user doesn't exist or password is wrong, reload the page
+            return jsonify("Login unsuccessful!") # if user doesn't exist or password is wrong, reload the page
         
 
         else:
             login_user(user)
-            return jsonify("OK")
-
-        """
-        return jsonify(response_object)
+            return jsonify(response_object)
 
 """
 @app.route("/home")
 @login_required
 def home():
     return 'you are in the home page'
-
-@app.route('/signup', methods=['POST', 'GET'])
+"""
+@app.route('/api/signup', methods=['POST', 'GET'])
 @cross_origin()
 def signup():
+    response_object = {'status': 'success'}
     if request.method == 'POST':
-        name = request.form.get('name')
-        password = request.form.get('password')
-
+        data=request.get_json()
+        name = data.get('username')
+        password = data.get('password')
         user = User.query.filter_by(name=name).first() 
 
         if user: # if a user is found, we want to redirect back to signup page so user can try again  
-            flash('User name already exists')
-            return redirect(url_for('signup'))
+            return jsonify("User already exists!")
 
         # create new user with the form data. Hash the password so plaintext version isn't saved.
         new_user = User(name=name, password=generate_password_hash(password, method='sha256'))
@@ -85,9 +79,9 @@ def signup():
 
         user = User.query.filter_by(name=name).first()
         login_user(user)
-        return redirect(url_for('home'))
-    return render_template('signup.html')
 
+    return response_object
+"""
 @app.route('/modes/<user_id>')
 @login_required
 def modes():
