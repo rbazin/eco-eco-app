@@ -1,29 +1,39 @@
 <template>
-  <div class="menu-bar">
-    <div class="menu-bar-item">
-      <router-link>
+  <div class="container has-radius is-danger px-5 mx-5">
+    <div class="columns is-mobile is-vcentered">
+      <router-link to="/friends" class="column">
         <img
+          class="image is-48x60 content"
           src="../assets/set_2/friends_white.png"
           alt="Friends icon"
-          class="image is-48x48"
         />
       </router-link>
-    </div>
-    <div class="menu-bar-item">
-      <router-link>
+      <router-link to="/badges" class="column">
         <img
-          src="../assets/set_2/medal_white.png"
+          class="image is-48x60 content"
+          src="../assets/set_2/badge.png"
           alt="Badge icon"
-          class="image is-48x48"
         />
       </router-link>
-    </div>
-    <div class="menu-bar-item">
-      <router-link>
+      <router-link to="/home" class="column">
         <img
+          class="image is-48x60 content"
           src="../assets/set_2/home_white.png"
           alt="Home icon"
-          class="image is-48x48"
+        />
+      </router-link>
+      <router-link to="/charts" class="column">
+        <img
+          class="image is-48x60 content"
+          src="../assets/set_2/graph_white.png"
+          alt="Chart icon"
+        />
+      </router-link>
+      <router-link to="/guide" class="column">
+        <img
+          class="image is-48x60 content"
+          src="../assets/set_2/help.png"
+          alt="Help icon"
         />
       </router-link>
     </div>
@@ -36,4 +46,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.container {
+  border-radius: 35px;
+  background-color: rgba(32, 196, 211, 0.45);
+}
+</style>

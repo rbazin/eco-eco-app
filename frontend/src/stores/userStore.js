@@ -18,6 +18,7 @@ export const userStore = defineStore("userStore", {
         userTreeState: this.userTreeState,
         userFriendList: [],
         userActiveChallenge: "",
+        loggedIn: false,
       };
     },
   },
@@ -27,6 +28,7 @@ export const userStore = defineStore("userStore", {
       this.userId = userId;
       this.userDroplets = userDroplets;
       this.userStreak = userStreak;
+      this.loggedIn = true;
     },
     async logout() {
       this.userName = "";
@@ -34,6 +36,7 @@ export const userStore = defineStore("userStore", {
       this.userDroplets = 0;
       this.userStreak = 0;
       this.userTreeState = "";
+      this.loggedIn = false;
     },
   },
 });

@@ -6,15 +6,17 @@
 </template>
 
 <script>
+// import MenuBar component
 import MenuBar from "./MenuBar.vue";
 
 export default {
-  name: "Home",
+  name: "HomePage",
   components: {
     MenuBar,
   },
 };
 </script>
+
 <style>
 .main-container {
   background-image: url("../assets/set_1/login_background.png");

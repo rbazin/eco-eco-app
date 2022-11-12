@@ -96,7 +96,7 @@ export default {
               response.data.userDroplets,
               response.data.userStreak
             );
-            this.$router.push("/home"); // Redirect to home page
+            this.$router.push("/home"); // Redirect to home page after login
           }
         })
         .catch((error) => {
