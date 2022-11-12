@@ -21,5 +21,6 @@ export default {
 <style>
 .main-container {
   background-image: url("../assets/set_1/login_background.png");
+  height: 100vh;
 }
 </style>
