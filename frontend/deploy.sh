@@ -1,9 +1,10 @@
 #!/usr/bin/env sh
 
+# Abort on errors
 set -e
 
 # Build the frontend
-yarn build
+yarn run build
 
 # navigate into the build output directory
 cd dist
