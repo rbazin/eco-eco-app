@@ -1,18 +1,14 @@
 #!/usr/bin/env sh
-
-# Abort on errors
+# abort on errors
 set -e
-
-# Build the frontend
+# build
 yarn run build
-
 # navigate into the build output directory
 cd dist
-
+# if you are deploying to a custom domain
+# echo 'www.example.com' > CNAME
 git init
 git add -A
 git commit -m 'deploy'
-
-git push -f git@github.com:rbazin/eco-eco-app.git main:gh-pages
-
+git push -f git@github.com:username/hello-world.git master:gh-pages
 cd -
