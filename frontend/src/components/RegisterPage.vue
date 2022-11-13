@@ -96,7 +96,7 @@ export default {
         return;
       }
       axios
-        .post("http://localhost:5000/api/signup", {
+        .post("/api/signup", {
           username: this.username,
           password: this.password,
         })

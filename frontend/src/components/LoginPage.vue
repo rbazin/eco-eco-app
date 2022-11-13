@@ -81,7 +81,7 @@ export default {
     // Login function with axios
     Login() {
       axios
-        .post("http://localhost:5000/api/login", {
+        .post("/api/login", {
           // call to the backend
           username: this.username,
           password: this.password,
