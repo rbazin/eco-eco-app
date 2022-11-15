@@ -18,5 +18,5 @@ export const routes = [
   { path: "/charts", component: ChartsPage },
   { path: "/profile", component: ProfilePage },
   { path: "/home", component: HomePage },
-  { path: "/:pathMatch(.*)*", component: NotFound }
+  { path: "/:pathMatch(.*)*", component: NotFound } // default route for pages not found
 ];
