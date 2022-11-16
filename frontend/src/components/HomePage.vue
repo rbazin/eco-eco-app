@@ -31,12 +31,12 @@
 
     <!--  Main content -->
     <div class="main-content">
-      <div class="columns is-centered is-hcentered has-text-centered">
-        <figure class="column has-text-centered" width="75%">
-          <img class="image" src="../assets/set_2/cloud.png" />
+      <div class="columns is-hcentered">
+        <figure class="column" width="75%">
+          <img class="image" width="300" src="../assets/set_2/cloud.png" />
         </figure>
-        <figure class="column has-text-centered">
-          <img class="image" src="../assets/set_2/tree_1.png" />
+        <figure class="column">
+          <img class="image" width="250px" src="../assets/set_2/tree_1.png" />
         </figure>
       </div>
     </div>
