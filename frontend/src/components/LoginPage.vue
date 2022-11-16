@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page is-fullheight">
+  <div class="login-page is-fullheight container">
     <figure class="content has-text-centered mb-0">
       <img src="../assets/set_1/1.png" alt="Eco-Eco Logo" width="200" />
     </figure>
