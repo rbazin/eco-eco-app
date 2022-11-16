@@ -25,7 +25,6 @@ export default {
   methods: {
     changeModal() {
       // change the value of isActive
-      console.log("change modal");
       this.isActive = !this.isActive;
     },
   },

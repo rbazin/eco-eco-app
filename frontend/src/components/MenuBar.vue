@@ -1,20 +1,20 @@
 <template>
   <div class="container has-radius is-danger px-5 mx-5">
     <div class="columns is-mobile is-vcentered">
-      <router-link @click="openModal" to="/friends" class="column">
+      <div @click="openModal" to="/friends" class="column">
         <img
           class="image is-48x60 content"
           src="../assets/set_2/friends_white.png"
           alt="Friends icon"
         />
-      </router-link>
-      <router-link @click="openModal" to="/badges" class="column">
+      </div>
+      <div @click="openModal" to="/badges" class="column">
         <img
           class="image is-48x60 content"
           src="../assets/set_2/badge.png"
           alt="Badge icon"
         />
-      </router-link>
+      </div>
       <router-link to="/home" class="column">
         <img
           class="image is-48x60 content"
@@ -22,13 +22,13 @@
           alt="Home icon"
         />
       </router-link>
-      <router-link @click="openModal" to="/charts" class="column">
+      <div @click="openModal" class="column">
         <img
           class="image is-48x60 content"
           src="../assets/set_2/graph_white.png"
           alt="Chart icon"
         />
-      </router-link>
+      </div>
       <div @click="openModal" class="column">
         <img
           class="image is-48x60 content"
@@ -46,7 +46,6 @@ export default {
   // make a method to emmit isActive when an icon is clicked
   methods: {
     openModal() {
-      console.log("open modal");
       this.$emit("toggleModal");
     },
   },
