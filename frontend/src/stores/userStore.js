@@ -7,6 +7,9 @@ export const userStore = defineStore("userStore", {
     userDroplets: 0,
     userStreak: 0,
     userTreeState: "",
+    userFriendList: [],
+    userActiveChallenge: null, // This may become an object with name and eco fact
+    userLoggedIn: false,
   }),
   getters: {
     getUserData() {
@@ -16,9 +19,9 @@ export const userStore = defineStore("userStore", {
         userDroplets: this.userDroplets,
         userStreak: this.userStreak,
         userTreeState: this.userTreeState,
-        userFriendList: [],
-        userActiveChallenge: "",
-        loggedIn: false,
+        userFriendList: this.userFriendList,
+        userActiveChallenge: this.userActiveChallenge,
+        userLoggedIn: this.userLoggedIn,
       };
     },
   },
@@ -28,7 +31,7 @@ export const userStore = defineStore("userStore", {
       this.userId = userId;
       this.userDroplets = userDroplets;
       this.userStreak = userStreak;
-      this.loggedIn = true;
+      this.userLoggedIn = true;
     },
     async logout() {
       this.userName = "";
@@ -36,7 +39,7 @@ export const userStore = defineStore("userStore", {
       this.userDroplets = 0;
       this.userStreak = 0;
       this.userTreeState = "";
-      this.loggedIn = false;
+      this.userLoggedIn = false;
     },
   },
 });
