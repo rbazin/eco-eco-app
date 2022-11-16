@@ -17,4 +17,5 @@ export const routes = [
   { path: "/charts", component: ChartsPage },
   { path: "/profile", component: ProfilePage },
   { path: "/home", component: HomePage },
+  { path: "/:pathMatch(.*)*", redirect: "/" }, // if the page is not found, redirect to the login page (improvement : send to 404 or home if logged in)
 ];
