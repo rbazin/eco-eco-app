@@ -1,17 +1,46 @@
 <template>
   <div class="main-container is-fullheight container">
-    <div class="container v-centered columns">
-      <div class="column">
+    <!--  Header with droplets streaks and profile picture -->
+    <div class="is-size-2 is-centered columns py-6 is-mobile has-text-centered">
+      <div class="column is-narrow">
         <span class="icon-text">
           <span class="icon"
             ><font-awesome-icon
               color="rgb(93, 173, 236)"
               icon="fa-solid fa-droplet"
           /></span>
-          <span class="is-size-4">Home</span>
+          <span class="is-size-4">{{ droplets }}</span>
         </span>
       </div>
+      <div class="column is-narrow">
+        <span class="icon-text">
+          <span class="icon"
+            ><font-awesome-icon
+              color="rgb(255, 172, 50)"
+              icon="fa-solid fa-bolt-lightning fa-7x"
+          /></span>
+          <span class="is-size-4">{{ streak }}</span>
+        </span>
+      </div>
+      <div class="column is-narrow">
+        <span class="icon"
+          ><font-awesome-icon icon="fa-solid fa-circle-user fa-7x"
+        /></span>
+      </div>
     </div>
+
+    <!--  Main content -->
+    <div class="main-content">
+      <div class="columns is-centered is-hcentered has-text-centered">
+        <figure class="column has-text-centered" width="75%">
+          <img class="image" src="../assets/set_2/cloud.png" />
+        </figure>
+        <figure class="column has-text-centered">
+          <img class="image" src="../assets/set_2/tree_1.png" />
+        </figure>
+      </div>
+    </div>
+    <!--  Menu Bar to navigate the app -->
     <MenuBar @toggle-modal="changeModal" />
     <NotImplemented @toggle-modal="changeModal" :isActive="isActive" />
   </div>
@@ -44,6 +73,7 @@ export default {
       profilePic: null,
       treeState: "",
       activeChallenge: null,
+      pathTree: "../assets/set_2/tree_1.png",
     };
   },
   methods: {
@@ -56,7 +86,7 @@ export default {
       const data = this.store.getUserData();
       this.droplets = data.userDroplets;
       this.streak = data.userStreak;
-      this.profilePic = data.userProfilePic; // We should fetch the profile pic but for now it will be static
+      // this.profilePic = data.userProfilePic; // We should fetch the profile pic but for now it will be static
       this.treeState = data.userTreeState;
       this.activeChallenge = data.userActiveChallenge;
     },
