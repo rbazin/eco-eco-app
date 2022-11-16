@@ -7,7 +7,6 @@ import GuidePage from "./components/GuidePage.vue";
 import ChartsPage from "./components/ChartsPage.vue";
 import BadgePage from "./components/BadgePage.vue";
 import ProfilePage from "./components/ProfilePage.vue";
-import NotFound from "./components/NotFound";
 
 export const routes = [
   { path: "/", component: LoginPage },
@@ -18,5 +17,4 @@ export const routes = [
   { path: "/charts", component: ChartsPage },
   { path: "/profile", component: ProfilePage },
   { path: "/home", component: HomePage },
-  { path: "/:pathMatch(.*)*", component: NotFound } // default route for pages not found
 ];
