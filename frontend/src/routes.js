@@ -8,12 +8,14 @@ import ChartsPage from "./components/ChartsPage.vue";
 import BadgePage from "./components/BadgePage.vue";
 import ProfilePage from "./components/ProfilePage.vue";
 import QuestionnairePage1 from "./components/QuestionnairePage1.vue";
+import QuestionnairePage2 from "./components/QuestionnairePage2.vue";
 
 // Possible routes for the application
 export const routes = [
   { path: "/", component: LoginPage },
   { path: "/register", component: RegisterPage },
   { path: "/questionnaire_1", component: QuestionnairePage1 },
+  { path: "/questionnaire_2", component: QuestionnairePage2 },
   { path: "/friends", component: FriendsPage },
   { path: "/guide", component: GuidePage },
   { path: "/badges", component: BadgePage },
