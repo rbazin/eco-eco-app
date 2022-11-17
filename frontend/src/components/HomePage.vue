@@ -32,7 +32,11 @@
     <!--  Main content -->
     <div id="main-content" class="mb-6">
       <div class="columns">
-        <figure id="cloud" class="column has-text-centered">
+        <figure
+          @click="openClearChallengeModal"
+          id="cloud"
+          class="column has-text-centered"
+        >
           <img :src="cloudPath" />
           <p id="cloud-text">{{ challengeText }}</p>
         </figure>
@@ -44,7 +48,15 @@
 
     <!--  Menu Bar to navigate the app -->
     <MenuBar @toggle-modal="changeModal" id="menu-bar" />
+
+    <!--  Modal to display when a feature is not implemented yet -->
     <NotImplemented @toggle-modal="changeModal" :isActive="isActive" />
+
+    <!-- Modal to clear or abort the current challenge -->
+    <ClearChallenge
+      @toggle-modal="changeModalClearChallenge"
+      :isActive="clearChallengeModal"
+    />
   </div>
 </template>
 
@@ -52,6 +64,7 @@
 // import MenuBar component
 import MenuBar from "./MenuBar.vue";
 import NotImplemented from "./NotImplemented.vue";
+import ClearChallenge from "./ClearChallenge.vue";
 
 import { userStore } from "../stores/userStore.js";
 
@@ -60,6 +73,7 @@ export default {
   components: {
     MenuBar,
     NotImplemented,
+    ClearChallenge,
   },
   setup() {
     const store = userStore();
@@ -70,6 +84,7 @@ export default {
   data() {
     return {
       isActive: false,
+      clearChallengeModal: false,
       droplets: 0,
       streak: 0,
       profilePic: null,
@@ -100,6 +115,16 @@ export default {
     changeModal() {
       // change the value of isActive
       this.isActive = !this.isActive;
+    },
+    changeModalClearChallenge() {
+      // change the value of clearChallengeModal
+      this.clearChallengeModal = !this.clearChallengeModal;
+    },
+    openClearChallengeModal() {
+      // Open the modal only if there is an active challenge
+      if (this.activeChallenge) {
+        this.changeModalClearChallenge();
+      }
     },
     // get the user's data from store : should launch right from the beginning
     async getUserData() {
