@@ -10,6 +10,7 @@ export const userStore = defineStore("userStore", {
     userFriendList: [],
     userActiveChallenge: null, // This may become an object with name and eco fact
     userLoggedIn: false,
+    userMeansOfTransport: [],
   }),
   getters: {
     getUserData() {

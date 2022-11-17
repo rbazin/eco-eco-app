@@ -101,8 +101,16 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          console.log(response);
-          this.$router.push("/questionnaire");
+          if (response.data.success) {
+            // Backend has to reply if the registration was successful
+            this.store.login(
+              // If it was, we log the user in
+              response.data.userId,
+              response.data.userDroplets,
+              response.data.userStreak
+            );
+            this.$router.push("/questionnaire_1");
+          }
         })
         .catch((error) => {
           console.log(error);
