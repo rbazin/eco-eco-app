@@ -13,8 +13,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
 db = SQLAlchemy(app)
 
-from .models import User, UserData
-
+from backend.models import User, UserData, Challenges
 
 
 with app.app_context():
@@ -22,9 +21,12 @@ with app.app_context():
 
 
 
-from . import main
+from backend import main
+
 
 if __name__=="__init__":
     app.run(debug=True)
-    
-    
+    #User.__table__.drop(db.engine)
+    #UserData.__table__.drop(db.engine)
+    #Challenges.__table__.drop(db.engine)
+
