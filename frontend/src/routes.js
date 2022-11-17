@@ -7,6 +7,7 @@ import GuidePage from "./components/GuidePage.vue";
 import ChartsPage from "./components/ChartsPage.vue";
 import BadgePage from "./components/BadgePage.vue";
 import ProfilePage from "./components/ProfilePage.vue";
+import ChallengePage from "./components/ChallengePage.vue"
 
 export const routes = [
   { path: "/", component: LoginPage },
@@ -17,5 +18,6 @@ export const routes = [
   { path: "/charts", component: ChartsPage },
   { path: "/profile", component: ProfilePage },
   { path: "/home", component: HomePage },
+  { path: "/challenge", component: ChallengePage},
   { path: "/:pathMatch(.*)*", redirect: "/" }, // if the page is not found, redirect to the login page (improvement : send to 404 or home if logged in)
 ];
