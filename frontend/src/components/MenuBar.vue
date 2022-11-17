@@ -1,5 +1,5 @@
 <template>
-  <div class="container has-radius is-danger px-5 mx-5">
+  <div id="menu-bar" class="container has-radius is-danger px-5 mx-5">
     <div class="columns is-mobile is-vcentered">
       <div @click="openModal" to="/friends" class="column">
         <img
