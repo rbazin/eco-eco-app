@@ -42,5 +42,11 @@ export const userStore = defineStore("userStore", {
       this.userTreeState = "";
       this.userLoggedIn = false;
     },
+    async updateDroplets(droplets) {
+      this.userDroplets = droplets;
+    },
+    async updateStreak(streak) {
+      this.userStreak = streak;
+    },
   },
 });
