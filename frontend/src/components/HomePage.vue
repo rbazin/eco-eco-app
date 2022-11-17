@@ -33,7 +33,7 @@
     <div id="main-content" class="mb-6">
       <div class="columns">
         <figure
-          @click="openClearChallengeModal"
+          @click="clickOnCloud"
           id="cloud"
           class="column has-text-centered"
         >
@@ -120,10 +120,13 @@ export default {
       // change the value of clearChallengeModal
       this.clearChallengeModal = !this.clearChallengeModal;
     },
-    openClearChallengeModal() {
+    clickOnCloud() {
       // Open the modal only if there is an active challenge
       if (this.activeChallenge) {
         this.changeModalClearChallenge();
+      } else {
+        // route to the challenges page
+        this.$router.push("/challenges");
       }
     },
     // get the user's data from store : should launch right from the beginning
