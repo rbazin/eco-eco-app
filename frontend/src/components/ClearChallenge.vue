@@ -75,7 +75,7 @@ export default {
         .then((response) => {
           if (response.status === "success") {
             this.store.userActiveChallenge = null;
-            this.sotre.userStreak = response.data.userStreak;
+            this.store.userStreak = response.data.userStreak;
             this.closeModal();
           }
           this.closeModal();
