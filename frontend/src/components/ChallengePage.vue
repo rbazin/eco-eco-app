@@ -92,7 +92,7 @@ export default {
           })
           .then((response) => {
             console.log(response);
-            if (response.data.success) {
+            if (response.data.status === "success") {
               this.challenges = response.data.challenges;
               challenge_store.challenges = response.data.challenges;
             }

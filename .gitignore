@@ -1,1 +1,3 @@
 .vscode
+backend/.vscode
+backend/__pycache__
