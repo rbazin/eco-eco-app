@@ -164,11 +164,12 @@ def challenge_complete():
         user_id=data['userId']
         user_data=UserData.query.get(user_id)
         challenges=Challenges.query.get(user_data.challenge)
-        user_data.droplets+=challenges.droplets
+        user_data.droplets+=int(challenges.droplets)
         user_data.streak+=1
         user_data.challenge=0
         response_object['userDroplets']=user_data.droplets
         response_object['streak']=user_data.streak
+        response_object['success']= True
         db.session.commit()
         return response_object
     else:
@@ -186,6 +187,7 @@ def challenge_abort():
         user_data.streak=0
         db.session.commit()
         response_object["userStreak"] = 0
+        response_object['success']= True
         return response_object
 
 

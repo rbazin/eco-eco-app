@@ -40,7 +40,7 @@ export default {
     markComplete() {
       // send request to backend to mark challenge as complete and update streak in store
       axios
-        .post("/api/challenge/complete", {
+        .post("http://localhost:5000/api/challenge/complete", {
           // Can I even access the store value like that ? What's the point of getters then ?
           challengeName: this.store.userActiveChallenge,
           challengeCompleted: true, // the backend should mark active challenge as null
@@ -65,7 +65,7 @@ export default {
     sendAbort() {
       // send request to backend to mark challenge as aborted and update streak in store
       axios
-        .post("/api/challenge/abort", {
+        .post("http://localhost:5000/api/challenge/abort", {
           // Can I even access the store value like that ? What's the point of getters then ?
           challengeName: this.store.userActiveChallenge,
           challengeAborted: true, // the backend should mark active challenge as null
@@ -75,7 +75,7 @@ export default {
         .then((response) => {
           if (response.status === "success") {
             this.store.userActiveChallenge = null;
-            this.store.userStreak = response.data.userStreak;
+            this.sotre.userStreak = response.data.userStreak;
             this.closeModal();
           }
           this.closeModal();
