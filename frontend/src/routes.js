@@ -10,6 +10,8 @@ import ProfilePage from "./components/ProfilePage.vue";
 import QuestionnairePage1 from "./components/QuestionnairePage1.vue";
 import QuestionnairePage2 from "./components/QuestionnairePage2.vue";
 import ChallengePage from "./components/ChallengePage.vue";
+import AllChallenges from "./components/AllChallenges.vue";
+import SelectChallenge from "./components/SelectChallenge.vue";
 
 // Possible routes for the application
 export const routes = [
@@ -24,5 +26,11 @@ export const routes = [
   { path: "/profile", component: ProfilePage },
   { path: "/home", component: HomePage },
   { path: "/challenge", component: ChallengePage },
+  { path: "/all-challenges", component: AllChallenges },
+  {
+    path: "/select-challenge/:id",
+    name: "SelectChallenge",
+    component: SelectChallenge,
+  },
   { path: "/:pathMatch(.*)*", redirect: "/" }, // if the page is not found, redirect to the login page (improvement : send to 404 or home if logged in)
 ];

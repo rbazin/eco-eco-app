@@ -126,7 +126,7 @@ export default {
         this.changeModalClearChallenge();
       } else {
         // route to the challenges page
-        this.$router.push("/challenges");
+        this.$router.push("/challenge");
       }
     },
     // get the user's data from store : should launch right from the beginning
