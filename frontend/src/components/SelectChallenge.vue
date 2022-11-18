@@ -57,7 +57,8 @@ export default {
     acceptChallenge() {
       // send the challenge to the backend
       axios
-        .post("http://localhost:5000/accept_challenge", {
+        .post("http://localhost:5000/api/accept_challenge", {
+          userId : this.user_store.userId,
           challengeId: this.id,
           isAccepted: true,
         })

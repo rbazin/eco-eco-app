@@ -147,7 +147,7 @@ def challenge_complete():
     response_object = {'status': 'success'}
     if request.method == 'POST':
         data=request.get_json()
-        user_id=data.userId
+        user_id=data['userId']
         user_data=UserData.query.get(user_id)
         challenges=Challenges.query.get(user_data.challenge)
         user_data.droplets+=challenges.droplets
@@ -166,7 +166,7 @@ def challenge_abort():
     response_object = {'status': 'success'}
     if request.method == 'POST':
         data=request.get_json()
-        user_id=data.userId
+        user_id=data['userId']
         user_data=UserData.query.get(user_id)
         user_data.challenge=0
         user_data.streak=0
@@ -187,12 +187,16 @@ def challenges_basic():
     response_object['challenges']=challenge_list
     return response_object
 
-@app.route('/api/challenge/select', methods=['POST', 'GET'])
+@app.route('/api/accept_challenge', methods=['POST', 'GET'])
 @cross_origin()
 def challenge_select():
     response_object = {'status': 'success'}
     if request.method == 'POST':
         data=request.get_json()
-        user_id=data.userId
+        user_id=data['userId']
+        challenge_id=data['challengeId']
+        user_data=UserData.query.get(user_id)
+        user_data.challenge=challenge_id
+        db.session.commit()
+        response_object['success']= True
         return response_object
-        
