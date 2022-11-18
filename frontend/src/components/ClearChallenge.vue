@@ -21,13 +21,16 @@
 import axios from "axios";
 
 import { userStore } from "../stores/userStore";
+import { challengeStore } from "../stores/challengeStore";
 
 export default {
   name: "Modal",
   setup() {
     const store = userStore();
+    const challenge_store = challengeStore();
     return {
       store,
+      challenge_store,
     };
   },
   methods: {
@@ -36,6 +39,9 @@ export default {
     },
     completionReward(nbrDroplets, newStreak) {
       this.$emit("completionReward", nbrDroplets, newStreak);
+    },
+    abortionEffect(newStreak) {
+      this.$emit("abortionEffect", newStreak);
     },
     markComplete() {
       // send request to backend to mark challenge as complete and update streak in store
@@ -50,6 +56,7 @@ export default {
         .then((response) => {
           if (response.data.success) {
             this.store.userActiveChallenge = null;
+            this.challenge_store.challenges = [];
             this.completionReward(
               response.data.userDroplets,
               response.data.userStreak
@@ -75,7 +82,8 @@ export default {
           if (response.data.success) {
             this.store.userActiveChallenge = null;
             this.store.userStreak = response.data.userStreak;
-            this.closeModal();
+            this.challenge_store.challenges = [];
+            this.abortionEffect(response.data.userStreak); // backend should return the droplets earned from completing the challenge and his new streak
           }
           this.closeModal();
         })

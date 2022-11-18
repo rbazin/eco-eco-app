@@ -54,6 +54,7 @@
 
     <!-- Modal to clear or abort the current challenge -->
     <ClearChallenge
+      @abortion-effect="abortionEffect"
       @completion-reward="completionReward"
       @toggle-modal="changeModalClearChallenge"
       :isActive="clearChallengeModal"
@@ -86,11 +87,11 @@ export default {
     return {
       isActive: false,
       clearChallengeModal: false,
-      droplets: 0,
-      streak: 0,
+      droplets: this.store.userDroplets,
+      streak: this.store.userStreak,
       profilePic: null,
-      treeState: 1, // 1 = grass, 2 = small tree, 3 = bigger tree, ...
-      activeChallenge: null,
+      treeState: this.store.userTreeState, // 1 = grass, 2 = small tree, 3 = bigger tree, ...
+      activeChallenge: this.store.userActiveChallenge,
     };
   },
   computed: {
@@ -113,9 +114,14 @@ export default {
     },
   },
   methods: {
+    abortionEffect(newStreak) {
+      this.streak = newStreak;
+      this.activeChallenge = null;
+    },
     completionReward(nbrDroplets, newStreak) {
       this.droplets = nbrDroplets;
       this.streak = newStreak;
+      this.activeChallenge = null;
       this.store.userDroplets = nbrDroplets;
       this.store.userStreak = newStreak;
     },

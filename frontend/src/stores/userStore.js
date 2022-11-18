@@ -6,7 +6,7 @@ export const userStore = defineStore("userStore", {
     userId: null,
     userDroplets: 0,
     userStreak: 0,
-    userTreeState: "",
+    userTreeState: 1,
     userFriendList: [],
     userActiveChallenge: null, // This may become an object with name and eco fact
     userLoggedIn: false,
@@ -40,7 +40,7 @@ export const userStore = defineStore("userStore", {
       this.userId = null;
       this.userDroplets = 0;
       this.userStreak = 0;
-      this.userTreeState = "";
+      this.userTreeState = 1;
       this.userLoggedIn = false;
     },
     async updateDroplets(droplets) {
