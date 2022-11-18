@@ -55,7 +55,7 @@ def signup():
         user = User.query.filter_by(name=name).first() 
 
         if user: # if a user is found, we want to redirect back to signup page so user can try again 
-            return jsonify("User already exists!")
+            return {'success': False}
 
         # create new user with the form data. Hash the password so plaintext version isn't saved.
         new_user = User(name=name, password=generate_password_hash(password, method='sha256'))
