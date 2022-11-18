@@ -71,3 +71,17 @@ def signup():
         db.session.commit()
 
     return response_object
+
+@app.route('/api/questionnaire_1', methods=['POST', 'GET'])
+@cross_origin()
+def questionnnaire1():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        data=request.get_json()
+        user_data=UserData.query.get(data.userId)
+        user_data.modes=data.meansOfTransport
+        db.session.commit()
+        print(UserData.query.get(data.userId))
+        return response_object
+    else:
+        return {'status': 'fail'}
