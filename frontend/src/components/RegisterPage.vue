@@ -60,7 +60,9 @@
       </div>
       <div class="field">
         <div class="control has-text-centered">
-          <button @click="register" class="button is-primary">Register</button>
+          <button @click="register" type="button" class="button is-primary">
+            Register
+          </button>
         </div>
       </div>
     </form>
@@ -70,6 +72,7 @@
 </template>
 <script>
 import axios from "axios";
+
 import { userStore } from "../stores/userStore";
 
 export default {
@@ -89,16 +92,14 @@ export default {
   },
   methods: {
     register() {
-      if (this.password !== this.confirmPassword) {
-        alert("Passwords do not match");
-        return;
-      }
+      console.log("Registering...");
       axios
-        .post("http://localhost:5000/api/signup", {
+        .post("http://localhost:5000/api/login", {
           username: this.username,
           password: this.password,
         })
         .then((response) => {
+          console.log(response);
           if (response.data.success) {
             // Backend has to reply if the registration was successful
             this.store.login(
