@@ -10,6 +10,8 @@ export const userStore = defineStore("userStore", {
     userFriendList: [],
     userActiveChallenge: null, // This may become an object with name and eco fact
     userLoggedIn: false,
+    userMeansOfTransport: [],
+    userFrequenciesOfTransport: [],
   }),
   getters: {
     getUserData() {
@@ -40,6 +42,12 @@ export const userStore = defineStore("userStore", {
       this.userStreak = 0;
       this.userTreeState = "";
       this.userLoggedIn = false;
+    },
+    async updateDroplets(droplets) {
+      this.userDroplets = droplets;
+    },
+    async updateStreak(streak) {
+      this.userStreak = streak;
     },
   },
 });
