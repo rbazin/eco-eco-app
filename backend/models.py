@@ -56,21 +56,7 @@ class Facts(db.Model):
     
 
 
-class Challenges(db.Model):
-    id=db.Column(db.Integer, primary_key=True)
-    task= db.Column(db.String(200))
-    mode= db.Column(db.String(100))
-    place= db.Column(db.String(100))
-    droplets= db.Column(db.Integer)
 
-    def obj_to_dict(self):  # for build json format
-        return {
-            "id": self.id,
-            "task": self.task,
-            "mode": self.mode,
-            "place": self.place,
-            "droplets": self.droplets
-        }
 
 
 
