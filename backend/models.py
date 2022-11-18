@@ -16,6 +16,7 @@ class UserData(db.Model):
     favs= db.Column(ScalarListType(int))
     stats=db.Column(JSONType)
     modes=db.Column(ScalarListType())
+    places=db.Column(JSONType)
     
 
 

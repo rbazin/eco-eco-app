@@ -53,7 +53,7 @@ def signup():
         name = data.get('username')
         password = data.get('password')
         user = User.query.filter_by(name=name).first() 
-        
+
         if user: # if a user is found, we want to redirect back to signup page so user can try again 
             return jsonify("User already exists!")
 
@@ -86,8 +86,21 @@ def questionnnaire1():
         user_data=UserData.query.get(data.userId)
         user_data.modes=data.meansOfTransport
         db.session.commit()
-        print(UserData.query.get(data.userId))
+        #print(UserData.query.get(data.userId))
         return response_object
     else:
         return {'status': 'fail'}
 
+@app.route('/api/questionnaire_2', methods=['POST', 'GET'])
+@cross_origin()
+def questionnnaire2():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        data=request.get_json()
+        user_data=UserData.query.get(data.userId)
+        user_data.places=data.frequenciesOfPlaces
+        db.session.commit()
+        #print(UserData.query.get(data.userId))
+        return response_object
+    else:
+        return {'status': 'fail'}
