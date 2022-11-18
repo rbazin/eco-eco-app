@@ -179,8 +179,10 @@ def challenge_abort():
 def challenges_basic():
     response_object = {'status': 'success'}
     challenge_ids=[random.choice(list(range(2,12))) for x in range(3)]
+    challenge_list=[]
     for i in range(len(challenge_ids)):
         challenge=Challenges.query.get(challenge_ids[i])
         fact=Facts.query.filter_by(mode=challenge.mode).first()
-        response_object.update({str(i):{'id':challenge.id, 'title':challenge.task, 'droplets':challenge.droplets, 'fact':fact.fact}})
+        challenge_list.append({'id':challenge.id, 'title':challenge.task, 'droplets':challenge.droplets, 'fact':fact.fact})
+    response_object['challenges']=challenge_list
     return response_object
