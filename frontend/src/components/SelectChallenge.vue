@@ -5,9 +5,23 @@
       <font-awesome-icon class="is-size-2" icon="fa-solid fa-arrow-left" />
     </div>
 
-    <div class="content">
-      <h1 class="is-size-1 title">{{ id }}</h1>
+    <!-- Challenge info -->
+    <div class="content has-text-centered">
+      <h1 class="is-1 title pb-5">{{ challenge.title }}</h1>
+      <div class="is-size-2">
+        <span class="icon-text">
+          <span class="icon"
+            ><font-awesome-icon
+              color="rgb(93, 173, 236)"
+              icon="fa-solid fa-droplet"
+          /></span>
+          <span class="is-size-2">{{ challenge.reward }}</span>
+        </span>
+      </div>
+      <h2 class="subtitle is-3">DID YOU KNOW ?</h2>
+      <p class="fact is-size-3">{{ challenge.fact }}</p>
     </div>
+
     <!-- Button to submit -->
     <div class="field px-5">
       <div class="control has-text-centered">
@@ -38,17 +52,15 @@ export default {
       user_store,
     };
   },
-  mounted() {
-    // get the challenge from the store by id
-    this.challenge = this.challenge_store.challenges.find(
-      // doesn't work for now
-      (challenge) => challenge.id === this.$route.params.id
-    );
-  },
   data() {
     return {
-      id: this.$route.params.id,
+      challenge: { title: "", id: this.$route.params.id, fact: "", reward: 0 },
     };
+  },
+  mounted() {
+    this.challenge = this.challenge_store.challenges.find(
+      (challenge) => challenge.id == this.$route.params.id
+    );
   },
   methods: {
     goBack() {
@@ -58,7 +70,7 @@ export default {
       // send the challenge to the backend
       axios
         .post("http://localhost:5000/api/accept_challenge", {
-          userId : this.user_store.userId,
+          userId: this.user_store.userId,
           challengeId: this.id,
           isAccepted: true,
         })
@@ -80,5 +92,15 @@ export default {
 .container {
   height: 100vh;
   background-image: url("../assets/set_1/login_background.png");
+}
+.fact {
+  color: #055c52;
+}
+.title {
+  color: #066284;
+  text-shadow: 4 2 #1199ee;
+}
+.subtitle {
+  color: #22aa99;
 }
 </style>
