@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.push("/challenge"); // For the moment it will change the three challenges from the previous page
+      this.$router.push("/challenge");
     },
     acceptChallenge() {
       // send the challenge to the backend
