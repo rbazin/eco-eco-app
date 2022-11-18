@@ -9,6 +9,7 @@ import BadgePage from "./components/BadgePage.vue";
 import ProfilePage from "./components/ProfilePage.vue";
 import QuestionnairePage1 from "./components/QuestionnairePage1.vue";
 import QuestionnairePage2 from "./components/QuestionnairePage2.vue";
+import ChallengePage from "./components/ChallengePage.vue";
 
 // Possible routes for the application
 export const routes = [
