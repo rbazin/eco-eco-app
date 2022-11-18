@@ -209,6 +209,7 @@ def challenges_basic():
             }
         )
     response_object["challenges"] = challenge_list
+    response_object['success']= True
     return response_object
 
 @app.route('/api/accept_challenge', methods=['POST', 'GET'])
