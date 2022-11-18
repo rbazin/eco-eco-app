@@ -69,13 +69,14 @@ def signup():
         user_data=UserData(id=user.id, droplets=0, streak=0, challenge=0)
         db.session.add(user_data)
         db.session.commit()
+        response_object['success']= True
         response_object['userId']=user.id
         response_object['userName']=user.name
         response_object['userDroplets']=user_data.droplets
         response_object['userStreak']=user_data.streak
         return response_object
     else: 
-        return {'status': 'fail'}
+        return {'success': False}
 
 @app.route('/api/questionnaire_1', methods=['POST', 'GET'])
 @cross_origin()
