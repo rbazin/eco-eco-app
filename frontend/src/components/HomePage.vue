@@ -54,6 +54,7 @@
 
     <!-- Modal to clear or abort the current challenge -->
     <ClearChallenge
+      @completion-reward="completionReward"
       @toggle-modal="changeModalClearChallenge"
       :isActive="clearChallengeModal"
     />
@@ -112,6 +113,12 @@ export default {
     },
   },
   methods: {
+    completionReward(nbrDroplets, newStreak) {
+      this.droplets = nbrDroplets;
+      this.streak = newStreak;
+      this.store.userDroplets = nbrDroplets;
+      this.store.userStreak = newStreak;
+    },
     changeModal() {
       // change the value of isActive
       this.isActive = !this.isActive;

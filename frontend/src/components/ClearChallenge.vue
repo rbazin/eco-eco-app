@@ -48,13 +48,12 @@ export default {
           userId: this.store.userId,
         })
         .then((response) => {
-          if (response.status === "success") {
+          if (response.data.success) {
             this.store.userActiveChallenge = null;
             this.completionReward(
               response.data.userDroplets,
               response.data.userStreak
             ); // backend should return the droplets earned from completing the challenge and his new streak
-            this.closeModal();
           }
           this.closeModal();
         })
@@ -73,7 +72,7 @@ export default {
           userId: this.store.userId,
         })
         .then((response) => {
-          if (response.status === "success") {
+          if (response.data.success) {
             this.store.userActiveChallenge = null;
             this.sotre.userStreak = response.data.userStreak;
             this.closeModal();
