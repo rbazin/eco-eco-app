@@ -36,30 +36,18 @@ export default {
   setup() {
     const user_store = userStore();
     const challenge_store = challengeStore();
+
     return {
       user_store,
       challenge_store,
     };
   },
+  mounted() {
+    this.getChallenges(this.challenge_store, this.user_store);
+  },
   data() {
     return {
-      challenges: [
-        {
-          id: 1,
-          title: "Challenge 1",
-          fact: "lorem ipsum",
-        },
-        {
-          id: 2,
-          title: "Challenge 2",
-          fact: "lorem ipsum",
-        },
-        {
-          id: 3,
-          title: "Challenge 3",
-          fact: "lorem ipsum",
-        },
-      ],
+      challenges: [],
     };
   },
   methods: {
@@ -79,29 +67,30 @@ export default {
       this.$router.push("/all-challenges");
     },
     // Function to get the challenge from the backend
-    getChallenges() {
+    getChallenges(challenge_store, user_store) {
       // Get 3 challenges from the backend, each challenge should be an object {id, title, fact, reward}
 
       // check if there are challenges in the store before asking backend
-      //if (this.challenge_store.getChallenges().length > 0) {
-      //  return this.challenge_store.getChallenges();
-      //}
-      axios
-        .get("http://localhost:5000/api/challenges", {
-          params: {
-            userId: this.store.userId, // the get request sends the id of the user to personalize the challenges sent
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.data.success) {
-            this.challenges = response.data.challenges;
-            this.challenge_store.setChallenges(this.challenges);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      if (challenge_store.challenges.length > 0) {
+        this.challenges = challenge_store.challenges;
+      } else {
+        axios
+          .get("http://localhost:5000/api/challenges", {
+            params: {
+              userId: user_store.userId, // the get request sends the id of the user to personalize the challenges sent
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            if (response.data.success) {
+              this.challenges = response.data.challenges;
+              challenge_store.challenges = response.data.challenges;
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     },
   },
 };
