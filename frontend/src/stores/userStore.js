@@ -11,6 +11,7 @@ export const userStore = defineStore("userStore", {
     userActiveChallenge: null, // This may become an object with name and eco fact
     userLoggedIn: false,
     userMeansOfTransport: [],
+    userFrequenciesOfTransport: [],
   }),
   getters: {
     getUserData() {

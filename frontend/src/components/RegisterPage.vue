@@ -6,7 +6,7 @@
 
     <h1 class="title is-1 has-text-centered">Register</h1>
     <p class="subtitle has-text-centered is-3">Please register to continue</p>
-    <form @submit.prevent="register">
+    <form>
       <div class="field px-5">
         <div class="control is-vcentered columns is-mobile">
           <figure class="column is-offset-2 is-narrow">
@@ -60,9 +60,7 @@
       </div>
       <div class="field">
         <div class="control has-text-centered">
-          <button @click="this.register()" class="button is-primary">
-            Register
-          </button>
+          <button @click="register" class="button is-primary">Register</button>
         </div>
       </div>
     </form>
