@@ -1,1 +1,73 @@
-[{"Challenge_id":0,"Task":"","Mode":"","Place":"","Droplets":""},{"Challenge_id":1,"Task":"Walk to school","Mode":"Walking","Place":"School","Droplets":50},{"Challenge_id":2,"Task":"Take the bus to school","Mode":"Busses","Place":"School","Droplets":40},{"Challenge_id":3,"Task":"Walk to work","Mode":"Walking","Place":"Work","Droplets":50},{"Challenge_id":4,"Task":"Take the bus to work","Mode":"Busses","Place":"Work","Droplets":40},{"Challenge_id":5,"Task":"Carpool with friends","Mode":"Car","Place":"Other","Droplets":40},{"Challenge_id":6,"Task":"Take the metro\/subway today","Mode":"Subway","Place":"Other","Droplets":40},{"Challenge_id":7,"Task":"Cycle to school","Mode":"Bike","Place":"School","Droplets":45},{"Challenge_id":8,"Task":"Take the train ","Mode":"Trains","Place":"Other","Droplets":40},{"Challenge_id":9,"Task":"Cycle to the gym","Mode":"Bike","Place":"Gym","Droplets":45},{"Challenge_id":10,"Task":"Cycle to work","Mode":"Bike","Place":"Work","Droplets":45}]
+[
+  { "Challenge_id": 0, "Task": "", "Mode": "", "Place": "", "Droplets": "" },
+  {
+    "Challenge_id": 1,
+    "Task": "Walk to school",
+    "Mode": "Walking",
+    "Place": "School",
+    "Droplets": 50
+  },
+  {
+    "Challenge_id": 2,
+    "Task": "Take the bus to school",
+    "Mode": "Busses",
+    "Place": "School",
+    "Droplets": 40
+  },
+  {
+    "Challenge_id": 3,
+    "Task": "Walk to work",
+    "Mode": "Walking",
+    "Place": "Work",
+    "Droplets": 50
+  },
+  {
+    "Challenge_id": 4,
+    "Task": "Take the bus to work",
+    "Mode": "Busses",
+    "Place": "Work",
+    "Droplets": 40
+  },
+  {
+    "Challenge_id": 5,
+    "Task": "Carpool with friends",
+    "Mode": "Car",
+    "Place": "Other",
+    "Droplets": 40
+  },
+  {
+    "Challenge_id": 6,
+    "Task": "Take the metro/subway today",
+    "Mode": "Subway",
+    "Place": "Other",
+    "Droplets": 40
+  },
+  {
+    "Challenge_id": 7,
+    "Task": "Cycle to school",
+    "Mode": "Bike",
+    "Place": "School",
+    "Droplets": 45
+  },
+  {
+    "Challenge_id": 8,
+    "Task": "Take the train ",
+    "Mode": "Trains",
+    "Place": "Other",
+    "Droplets": 40
+  },
+  {
+    "Challenge_id": 9,
+    "Task": "Cycle to the gym",
+    "Mode": "Bike",
+    "Place": "Gym",
+    "Droplets": 45
+  },
+  {
+    "Challenge_id": 10,
+    "Task": "Cycle to work",
+    "Mode": "Bike",
+    "Place": "Work",
+    "Droplets": 45
+  }
+]

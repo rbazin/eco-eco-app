@@ -79,6 +79,8 @@ def login():
             response_object["userDroplets"] = user_data.droplets
             response_object["userStreak"] = user_data.streak
             return jsonify(response_object)
+    else:
+        return {"status": "fail"}
 
 
 @app.route("/api/signup", methods=["POST", "GET"])
