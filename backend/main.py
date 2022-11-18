@@ -186,3 +186,13 @@ def challenges_basic():
         challenge_list.append({'id':challenge.id, 'title':challenge.task, 'droplets':challenge.droplets, 'fact':fact.fact})
     response_object['challenges']=challenge_list
     return response_object
+
+@app.route('/api/challenge/select', methods=['POST', 'GET'])
+@cross_origin()
+def challenge_select():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        data=request.get_json()
+        user_id=data.userId
+        return response_object
+        
