@@ -83,10 +83,9 @@ def questionnnaire1():
     response_object = {'status': 'success'}
     if request.method == 'POST':
         data=request.get_json()
-        user_data=UserData.query.get(data.userId)
-        user_data.modes=data.meansOfTransport
+        user_data=UserData.query.get(data['userId'])
+        user_data.modes=data['meansOfTransport']
         db.session.commit()
-        #print(UserData.query.get(data.userId))
         return response_object
     else:
         return {'status': 'fail'}
@@ -97,10 +96,13 @@ def questionnnaire2():
     response_object = {'status': 'success'}
     if request.method == 'POST':
         data=request.get_json()
-        user_data=UserData.query.get(data.userId)
-        user_data.places=data.frequenciesOfPlaces
+        user_data=UserData.query.get(data['userId'])
+        places={"daily":[], "weekly":[], "monthly":[]}
+        for i in range(len(data['frequenciesOfPlaces'])):
+            if data['frequenciesOfPlaces'][i]['frequency']:
+                places[data['frequenciesOfPlaces'][i]['frequency']].append(data['frequenciesOfPlaces'][i]['mean'])
+        user_data.places=places
         db.session.commit()
-        #print(UserData.query.get(data.userId))
         return response_object
     else:
         return {'status': 'fail'}
