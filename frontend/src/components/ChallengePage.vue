@@ -16,13 +16,13 @@
     </div>
 
     <!-- Button to see full list -->
-    <div class="field mt-6 px-5">
-      <div class="control has-text-centered">
-        <button @click="goToFullList" class="button is-info" type="button">
-          See full list
-        </button>
+    <div class="content is-centered has-text-centered pt-6">
+      <div @click="changeModal" class="button is-info has-text-centered">
+        See full list
       </div>
     </div>
+    <!--  Modal to display when a feature is not implemented yet -->
+    <NotImplemented @toggle-modal="changeModal" :isActive="isActive" />
   </div>
 </template>
 
@@ -31,8 +31,13 @@ import axios from "axios";
 import { userStore } from "../stores/userStore";
 import { challengeStore } from "../stores/challengeStore";
 
+import NotImplemented from "./NotImplemented.vue";
+
 export default {
   name: "ChallengePage",
+  components: {
+    NotImplemented,
+  },
   setup() {
     const user_store = userStore();
     const challenge_store = challengeStore();
@@ -47,10 +52,15 @@ export default {
   },
   data() {
     return {
+      isActive: false,
       challenges: [],
     };
   },
   methods: {
+    changeModal() {
+      // change the value of isActive
+      this.isActive = !this.isActive;
+    },
     goToChallenge(challenge) {
       this.$router.push({
         name: "SelectChallenge",
