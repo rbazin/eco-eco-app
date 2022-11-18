@@ -54,7 +54,7 @@ def signup():
         password = data.get('password')
         user = User.query.filter_by(name=name).first() 
 
-        if user: # if a user is found, we want to redirect back to signup page so user can try again  
+        if user: # if a user is found, we want to redirect back to signup page so user can try again 
             return jsonify("User already exists!")
 
         # create new user with the form data. Hash the password so plaintext version isn't saved.
@@ -69,8 +69,13 @@ def signup():
         user_data=UserData(id=user.id, droplets=0, streak=0, challenge=0)
         db.session.add(user_data)
         db.session.commit()
-
-    return response_object
+        response_object['userId']=user.id
+        response_object['userName']=user.name
+        response_object['userDroplets']=user_data.droplets
+        response_object['userStreak']=user_data.streak
+        return response_object
+    else: 
+        return {'status': 'fail'}
 
 @app.route('/api/questionnaire_1', methods=['POST', 'GET'])
 @cross_origin()
@@ -81,7 +86,21 @@ def questionnnaire1():
         user_data=UserData.query.get(data.userId)
         user_data.modes=data.meansOfTransport
         db.session.commit()
-        print(UserData.query.get(data.userId))
+        #print(UserData.query.get(data.userId))
+        return response_object
+    else:
+        return {'status': 'fail'}
+
+@app.route('/api/questionnaire_2', methods=['POST', 'GET'])
+@cross_origin()
+def questionnnaire2():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        data=request.get_json()
+        user_data=UserData.query.get(data.userId)
+        user_data.places=data.frequenciesOfPlaces
+        db.session.commit()
+        #print(UserData.query.get(data.userId))
         return response_object
     else:
         return {'status': 'fail'}
