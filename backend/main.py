@@ -5,7 +5,7 @@ from flask_cors import cross_origin
 from . import app
 from . import db
 from .models import User, UserData, Challenges, Facts
-import json
+import json, os, random
 
 
 login_manager = LoginManager()
@@ -27,14 +27,14 @@ def data_loading():
         db.session.query(Facts).delete()
         db.session.commit()
 
-    f = open('/backend/data/challenges.json')
+    f = open(str(os.path.dirname(os.path.abspath(__file__)))+'/data/challenges.json')
     data = json.load(f)
     for i in data:
         x=Challenges(task= i['Task'], mode= i['Mode'], place= i['Place'], droplets= i['Droplets'])
         with app.app_context():
             db.session.add(x)
             db.session.commit()
-    f = open('/backend/data/facts.json')
+    f = open(str(os.path.dirname(os.path.abspath(__file__)))+'/data/facts.json')
     data = json.load(f)
     for i in data:
         x=Facts(mode= i['Mode'], fact= i['Fact'])
@@ -178,9 +178,9 @@ def challenge_abort():
 @cross_origin()
 def challenges_basic():
     response_object = {'status': 'success'}
-    challenge_ids=[random.choice(list(range(2,12))) for x in range(int(x))]
-    for c in challenge_ids:
-        challenge=Challenges.query.get(c)
-        fact=random.choice(Facts.filter_by(mode=c.mode))
-        response_object+=['id':challenge.id, 'title':challenge.task, 'droplets':challenge.droplets, 'fact':fact]
+    challenge_ids=[random.choice(list(range(2,12))) for x in range(3)]
+    for i in range(len(challenge_ids)):
+        challenge=Challenges.query.get(challenge_ids[i])
+        fact=Facts.query.filter_by(mode=challenge.mode).first()
+        response_object.update({str(i):{'id':challenge.id, 'title':challenge.task, 'droplets':challenge.droplets, 'fact':fact.fact}})
     return response_object

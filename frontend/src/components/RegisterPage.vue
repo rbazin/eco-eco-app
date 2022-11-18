@@ -94,7 +94,7 @@ export default {
     register() {
       console.log("Registering...");
       axios
-        .post("http://localhost:5000/api/login", {
+        .post("http://localhost:5000/api/signup", {
           username: this.username,
           password: this.password,
         })
