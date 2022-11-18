@@ -30,7 +30,7 @@
           class="button is-primary"
           type="button"
         >
-          Submit
+          Accept challenge
         </button>
       </div>
     </div>
@@ -76,7 +76,7 @@ export default {
       axios
         .post("http://localhost:5000/api/accept_challenge", {
           userId: this.user_store.userId,
-          challengeId: this.id,
+          challengeId: this.challenge.id,
           isAccepted: true,
         })
         .then((response) => {
