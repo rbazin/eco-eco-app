@@ -95,7 +95,7 @@ export default {
               response.data.userDroplets,
               response.data.userStreak
             );
-            this.$router.push("/challenge"); // Redirect to home page after login
+            this.$router.push("/home"); // Redirect to home page after login
           }
         })
         .catch((error) => {

@@ -15,7 +15,7 @@
               color="rgb(93, 173, 236)"
               icon="fa-solid fa-droplet"
           /></span>
-          <span class="is-size-2">{{ challenge.reward }}</span>
+          <span class="is-size-2">{{ challenge.droplets }}</span>
         </span>
       </div>
       <h2 class="subtitle is-3">DID YOU KNOW ?</h2>
@@ -54,7 +54,12 @@ export default {
   },
   data() {
     return {
-      challenge: { title: "", id: this.$route.params.id, fact: "", reward: 0 },
+      challenge: {
+        title: "",
+        id: this.$route.params.id,
+        fact: "",
+        droplets: 0,
+      },
     };
   },
   mounted() {

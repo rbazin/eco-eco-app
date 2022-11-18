@@ -78,7 +78,7 @@ export default {
     },
     // Function to get the challenge from the backend
     getChallenges(challenge_store, user_store) {
-      // Get 3 challenges from the backend, each challenge should be an object {id, title, fact, reward}
+      // Get 3 challenges from the backend, each challenge should be an object {id, title, fact, droplets}
 
       // check if there are challenges in the store before asking backend
       if (challenge_store.challenges.length > 0) {
