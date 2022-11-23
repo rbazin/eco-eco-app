@@ -54,7 +54,7 @@ export default {
 
 <style scoped>
 #menu-bar {
-  max-width: 300px;
+  max-width: 400px;
   width: 90%;
 }
 .container {
