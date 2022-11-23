@@ -57,7 +57,7 @@
       @abortion-effect="abortionEffect"
       @completion-reward="completionReward"
       @toggle-modal="changeModalClearChallenge"
-      :isActive="clearChallengeModal"
+      v-bind:isActive="clearChallengeModal"
     />
   </div>
 </template>

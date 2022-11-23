@@ -18,6 +18,7 @@
           </figure>
           <input
             class="input column is-6"
+            :class="{ 'is-danger': !isUsernameValid }"
             type="text"
             placeholder="Username"
             v-model="username"
@@ -35,24 +36,30 @@
           </figure>
           <input
             class="input column is-6"
+            :class="{ 'is-danger': !isUsernameValid }"
             type="password"
             placeholder="Password"
             v-model="password"
           />
         </div>
+        <p
+          v-if="!isUsernameValid"
+          class="help has-text-centered is-size-5 has-text-danger"
+          :class="{ 'is-danger': !isUsernameValid }"
+        >
+          User doesn't exist, please register first
+        </p>
       </div>
       <div class="field">
         <div class="control has-text-centered">
-          <button @click="this.Login()" class="button is-primary">Login</button>
+          <button @click="Login" class="button is-primary">Login</button>
         </div>
       </div>
     </form>
     <img class="is-image" src="../assets/set_1/divider.png" />
     <p class="subtitle has-text-centered is-4">Don't have an account yet ?</p>
     <div class="has-text-centered">
-      <router-link to="/register" class="button is-primary">
-        Register
-      </router-link>
+      <router-link to="/register" class="button is-primary"> Register </router-link>
     </div>
     <img class="is-image" src="../assets/set_1/8.png" />
   </div>
@@ -74,6 +81,7 @@ export default {
     return {
       username: "",
       password: "",
+      isUsernameValid: true,
     };
   },
   methods: {
@@ -89,13 +97,14 @@ export default {
           console.log(response);
           if (response.data.status === "success") {
             // Stores data about the user that will be needed everywhere in the user store
-            this.store.login(
-              response.data.userId,
-              response.data.userName,
-              response.data.userDroplets,
-              response.data.userStreak
-            );
+            this.store.userId = response.data.userId;
+            this.store.userName = response.data.userName;
+            this.store.userDroplets = response.data.userDroplets;
+            this.store.userStreak = response.data.userStreak;
+            this.store.userLoggedIn = true;
             this.$router.push("/home"); // Redirect to home page after login
+          } else {
+            this.isUsernameValid = false;
           }
         })
         .catch((error) => {
