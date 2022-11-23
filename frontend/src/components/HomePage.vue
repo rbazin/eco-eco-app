@@ -5,9 +5,7 @@
       <div class="column is-narrow has-text-centered">
         <span class="icon-text">
           <span class="icon"
-            ><font-awesome-icon
-              color="rgb(93, 173, 236)"
-              icon="fa-solid fa-droplet"
+            ><font-awesome-icon color="rgb(93, 173, 236)" icon="fa-solid fa-droplet"
           /></span>
           <span class="is-size-4">{{ droplets }}</span>
         </span>
@@ -30,17 +28,13 @@
     </div>
 
     <!--  Main content -->
-    <div id="main-content" class="mb-6">
+    <div id="main-content" class="mb-3">
       <div class="columns">
-        <figure
-          @click="clickOnCloud"
-          id="cloud"
-          class="column has-text-centered"
-        >
-          <img :src="cloudPath" />
+        <figure @click="clickOnCloud" id="cloud" class="column has-text-centered">
+          <img :src="cloudPath" max-width="180px" />
           <p id="cloud-text">{{ challengeText }}</p>
         </figure>
-        <figure class="column has-text-centered">
+        <figure id="tree" class="column has-text-centered">
           <img :src="treePath" />
         </figure>
       </div>
@@ -166,11 +160,14 @@ export default {
   margin: 0;
 }
 img {
-  width: 75%;
-  height: auto;
+  width: 100%;
 }
 #cloud {
   position: relative;
+}
+#cloud img {
+  max-width: 300px;
+  margin: auto;
 }
 #cloud-text {
   font-family: "Sofia", cursive;
@@ -182,5 +179,9 @@ img {
   transform: translate(-50%, -50%);
   font-size: 1.5rem;
   font-weight: bold;
+}
+#tree img {
+  max-width: 250px;
+  margin: auto;
 }
 </style>
