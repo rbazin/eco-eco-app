@@ -31,7 +31,7 @@
     <div id="main-content" class="mb-3">
       <div class="columns">
         <figure @click="clickOnCloud" id="cloud" class="column has-text-centered">
-          <img :src="cloudPath" max-width="180px" />
+          <img :src="cloudPath">
           <p id="cloud-text">{{ challengeText }}</p>
         </figure>
         <figure id="tree" class="column has-text-centered">
@@ -41,7 +41,7 @@
     </div>
 
     <!--  Menu Bar to navigate the app -->
-    <MenuBar @toggle-modal="changeModal" id="menu-bar" />
+    <MenuBar @toggle-modal="changeModal"/>
 
     <!--  Modal to display when a feature is not implemented yet -->
     <NotImplemented @toggle-modal="changeModal" :isActive="isActive" />
@@ -153,6 +153,7 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Sofia&display=swap");
 .main-container {
+  position: relative;
   background-image: url("../assets/set_1/login_background.png");
   min-height: 100vh;
   background-repeat: repeat-y;
