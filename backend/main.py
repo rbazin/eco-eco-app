@@ -5,7 +5,9 @@ from flask_cors import cross_origin
 from . import app
 from . import db
 from .models import User, UserData, Challenges, Facts
-import json, os, random
+import json, os, random, time
+from sqlalchemy.orm.attributes import flag_modified
+import seaborn as sns
 
 
 login_manager = LoginManager()
@@ -21,8 +23,20 @@ def load_user(user_id):
 
 ##Methods
 def update_stats(user_data, challenge):
-    print("Here")
-    return
+    label=time.strftime("%d-%m-%Y")
+    if user_data.stats==None:
+        user_data.stats={}
+    if label not in user_data.stats:
+        user_data.stats[label]={
+            "Walking":0,
+            "Busses":0,
+            "Car":0,
+            "Subway":0,
+            "Bike":0,
+            "Trains":0
+        }
+    user_data.stats[label][challenge.mode]+=1
+    return user_data
 
 def commit_data(data):
     with app.app_context():
@@ -193,9 +207,12 @@ def challenge_complete():
         user_data.challenge=0
         response_object['userDroplets']=user_data.droplets
         response_object['streak']=user_data.streak
-        db.session.commit()
         response_object['success']= True
-        update_stats(user_data, challenges)
+        user_data=update_stats(user_data, challenges)
+        flag_modified(user_data, "stats")
+        db.session.commit()
+        user_data=UserData.query.get(user_id)
+        print("Stats", user_data.stats)
         return response_object
     else:
         return {'status': 'fail'}
