@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div class="main-container pb-5">
     <!--  Header with droplets streaks and profile picture -->
     <div class="is-size-2 is-centered columns py-6 is-mobile">
       <div class="column is-narrow has-text-centered">
@@ -79,6 +79,7 @@ export default {
   },
   data() {
     return {
+      // We get most of the data from the userStore
       isActive: false,
       clearChallengeModal: false,
       droplets: this.store.userDroplets,
@@ -153,8 +154,9 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Sofia&display=swap");
 .main-container {
   background-image: url("../assets/set_1/login_background.png");
-  height: 100vh;
-}
+  min-height: 100vh;
+  background-repeat: repeat-y;
+  }
 .columns {
   width: 100vw;
   margin: 0;

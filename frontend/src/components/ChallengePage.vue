@@ -28,8 +28,8 @@
 
 <script>
 import axios from "axios";
-import { userStore } from "../stores/userStore";
-import { challengeStore } from "../stores/challengeStore";
+import { userStore } from "@/stores/userStore";
+import { challengeStore } from "@/stores/challengeStore";
 
 import NotImplemented from "./NotImplemented.vue";
 

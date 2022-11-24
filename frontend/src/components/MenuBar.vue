@@ -1,5 +1,5 @@
 <template>
-  <div id="menu-bar" class="container has-radius px-5">
+  <div class="menu-bar container has-radius px-5">
     <div class="columns is-mobile is-vcentered is-hcentered is-centered">
 
       <router-link to="/friends" class="column">
@@ -54,12 +54,10 @@ export default {
 </script>
 
 <style scoped>
-#menu-bar {
-  max-width: 400px;
-  width: 90%;
-}
-.container {
+.menu-bar {
   border-radius: 35px;
   background-color: rgba(32, 196, 211, 0.45);
+  max-width: 400px;
+  width: 90%;
 }
 </style>
