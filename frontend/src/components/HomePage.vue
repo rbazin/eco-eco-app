@@ -159,6 +159,12 @@ export default {
   width: 100vw;
   margin: 0;
 }
+.column {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;  
+}
 img {
   width: 100%;
 }

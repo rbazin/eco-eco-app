@@ -109,7 +109,7 @@ export default {
 <style scoped>
 .container {
   background-image: url("../assets/set_1/login_background.png");
-  height: 100vh;
+  min-height: 100vh;
 }
 .challenge {
   color: rgb(12, 50, 110);

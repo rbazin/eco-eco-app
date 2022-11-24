@@ -5,8 +5,9 @@ import {
   faBoltLightning,
   faCircleUser,
   faArrowLeft,
+  faUser
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faDroplet, faBoltLightning, faCircleUser, faArrowLeft);
+library.add(faDroplet, faBoltLightning, faCircleUser, faArrowLeft, faUser);
 
 export default FontAwesomeIcon;

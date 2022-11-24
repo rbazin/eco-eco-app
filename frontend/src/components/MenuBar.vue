@@ -1,13 +1,14 @@
 <template>
   <div id="menu-bar" class="container has-radius px-5">
     <div class="columns is-mobile is-vcentered is-hcentered is-centered">
-      <div @click="openModal" to="/friends" class="column">
+
+      <router-link to="/friends" class="column">
         <img
           class="image is-48x60 content"
           src="../assets/set_2/friends_white.png"
-          alt="Friends icon"
+          alt="Home icon"
         />
-      </div>
+      </router-link>
       <div @click="openModal" to="/badges" class="column">
         <img
           class="image is-48x60 content"
@@ -54,7 +55,7 @@ export default {
 
 <style scoped>
 #menu-bar {
-  max-width: 350px;
+  max-width: 400px;
   width: 90%;
 }
 .container {
