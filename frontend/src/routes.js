@@ -10,7 +10,7 @@ import ProfilePage from "./components/ProfilePage.vue";
 import QuestionnairePage1 from "./components/QuestionnairePage1.vue";
 import QuestionnairePage2 from "./components/QuestionnairePage2.vue";
 import ChallengePage from "./components/ChallengePage.vue";
-import AllChallenges from "./components/AllChallenges.vue";
+import AllChallengesPage from "./components/AllChallengesPage.vue";
 import SelectChallenge from "./components/SelectChallenge.vue";
 import AddFriendPage from "./components/AddFriendPage";
 
@@ -28,7 +28,7 @@ export const routes = [
   { path: "/profile", component: ProfilePage },
   { path: "/home", component: HomePage },
   { path: "/challenge", component: ChallengePage },
-  { path: "/all-challenges", component: AllChallenges },
+  { path: "/all-challenges", component: AllChallengesPage },
   {
     path: "/select-challenge/:id",
     name: "SelectChallenge",
