@@ -251,7 +251,8 @@ def challenges_basic():
         data=request.get_json()
         user_id=data['userId']
         user_data=UserData.query.get(user_id) 
-        challenge_ids = [random.choice(list(range(2, 12))) for x in range(3)] #add user personalization
+        c=random.choice(list(range(2, 10)))
+        challenge_ids = [ c+x for x in range(3)] #add user personalization
         challenge_list = []
         for i in range(len(challenge_ids)):
             challenge = Challenges.query.get(challenge_ids[i])
@@ -353,7 +354,7 @@ def friends_list():
                 {
                     "FriendId":f,
                     "FriendName":friend.name,
-                    "Challenge": "No challenge in progress" if challenge.task==None else challenge.task
+                    "Challenge": "No challenge in progress" if challenge.task is None else challenge.task
                 }
             )
         response_object["friends"] = challenge_list
@@ -376,6 +377,6 @@ def friends_add():
         challenge=Challenges.query.get(friend_data.challenge)
         response_object["FriendId"]:friend.id
         response_object["FriendName"]:friend.name
-        response_object["Challenge"]: "No challenge in progress" if challenge.task==None else challenge.task
+        response_object["Challenge"]: "No challenge in progress" if challenge.task is None else challenge.task
         return response_object
 
