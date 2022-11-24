@@ -9,9 +9,7 @@
         <button @click="markComplete" class="button is-primary is-size-4 mb-5">
           Mark complete
         </button>
-        <button @click="sendAbort" class="button is-danger is-size-4">
-          Abort
-        </button>
+        <button @click="sendAbort" class="button is-danger is-size-4">Abort</button>
       </div>
     </div>
   </div>
@@ -54,13 +52,11 @@ export default {
           userId: this.store.userId,
         })
         .then((response) => {
+          console.log(response);
           if (response.data.success) {
             this.store.userActiveChallenge = null;
             this.challenge_store.challenges = [];
-            this.completionReward(
-              response.data.userDroplets,
-              response.data.userStreak
-            ); // backend should return the droplets earned from completing the challenge and his new streak
+            this.completionReward(response.data.userDroplets, response.data.streak); // backend should return the droplets earned from completing the challenge and his new streak
           }
           this.closeModal();
         })

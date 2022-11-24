@@ -1,6 +1,6 @@
 <template>
-  <div id="menu-bar" class="container has-radius is-danger px-5 mx-5">
-    <div class="columns is-mobile is-vcentered">
+  <div id="menu-bar" class="container has-radius px-5">
+    <div class="columns is-mobile is-vcentered is-hcentered is-centered">
       <div @click="openModal" to="/friends" class="column">
         <img
           class="image is-48x60 content"
@@ -53,6 +53,10 @@ export default {
 </script>
 
 <style scoped>
+#menu-bar {
+  max-width: 350px;
+  width: 90%;
+}
 .container {
   border-radius: 35px;
   background-color: rgba(32, 196, 211, 0.45);

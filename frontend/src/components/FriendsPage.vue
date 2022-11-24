@@ -1,5 +1,9 @@
 <template>
-  <h1 class="title is-1">Friends Page</h1>
+  <h1>title</h1>
 </template>
-<script></script>
+<script>
+export default {
+  name: "App",
+};
+</script>
 <style></style>

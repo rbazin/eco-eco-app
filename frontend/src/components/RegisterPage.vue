@@ -19,6 +19,7 @@
           <input
             class="input column is-6"
             type="text"
+            :class="{ 'is-danger': !isUsernameValid }"
             placeholder="Username"
             v-model="username"
           />
@@ -37,6 +38,7 @@
             class="input column is-6"
             type="password"
             placeholder="Password"
+            :class="{ 'is-danger': !isUsernameValid }"
             v-model="password"
           />
         </div>
@@ -54,9 +56,17 @@
             class="input column is-6"
             type="password"
             placeholder="Confirm password"
+            :class="{ 'is-danger': !isUsernameValid }"
             v-model="confirmPassword"
           />
         </div>
+        <p
+          v-if="!isValid"
+          class="help has-text-centered is-size-5 has-text-danger"
+          :class="{ 'is-danger': !isValid }"
+        >
+          Username or Password already exist, please enter valid credentials
+        </p>
       </div>
       <div class="field">
         <div class="control has-text-centered">
@@ -88,6 +98,7 @@ export default {
       username: "",
       password: "",
       confirmPassword: "",
+      isValid: true,
     };
   },
   methods: {
@@ -102,13 +113,14 @@ export default {
           console.log(response);
           if (response.data.success) {
             // Backend has to reply if the registration was successful
-            this.store.login(
-              // If it was, we log the user in
-              response.data.userId,
-              response.data.userDroplets,
-              response.data.userStreak
-            );
+            this.store.userId = response.data.userId;
+            this.store.userName = response.data.userName;
+            this.store.userDroplets = response.data.userDroplets;
+            this.store.userStreak = response.data.userStreak;
+            this.store.userLoggedIn = true;
             this.$router.push("/questionnaire_1");
+          } else {
+            this.isValid = false;
           }
         })
         .catch((error) => {
