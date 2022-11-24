@@ -7,7 +7,7 @@ from . import db
 from .models import User, UserData, Challenges, Facts
 import json, os, random, time, base64
 from sqlalchemy.orm.attributes import flag_modified
-import seaborn as sns
+#import seaborn as sns
 
 
 login_manager = LoginManager()
@@ -154,7 +154,7 @@ def signup():
         db.session.commit()
 
         user = User.query.filter_by(name=name).first()
-        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=0)
+        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=0, friend=[(User.query.filter_by(name=name).first()).id])
         db.session.add(user_data)
         db.session.commit()
         response_object["success"] = True
@@ -322,13 +322,60 @@ def challenges_all():
 @cross_origin()
 def stats():
     response_object = {"status": "success"}
-    #if request.method == 'POST':
-    response_object['success']= True
-    with open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/graph1.png", "rb") as img:
-        weekly = base64.b64encode(img.read()).decode('utf-8')
-    with open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/graph2.png", "rb") as img:
-        monthly = base64.b64encode(img.read()).decode('utf-8')
-    response_object['weekly']=weekly
-    response_object['monthly']=monthly
-    return response_object
+    if request.method == 'POST':
+        response_object['success']= True
+        data=request.get_json()
+        user_id=data['userId']
+        user_data=UserData.query.get(user_id) 
+        with open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/graph1.png", "rb") as img:
+            weekly = base64.b64encode(img.read()).decode('utf-8')
+        with open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/graph2.png", "rb") as img:
+            monthly = base64.b64encode(img.read()).decode('utf-8')
+        response_object['weekly']=weekly
+        response_object['monthly']=monthly
+        return response_object
+
+@app.route("/api/friend/list", methods=["POST", "GET"])
+@cross_origin()
+def friends_list():
+    response_object = {"status": "success"}
+    if request.method == 'POST':
+        response_object['success']= True
+        data=request.get_json()
+        user_id=data['userId']
+        user_data=UserData.query.get(user_id)
+        friends_list=[]
+        for f in user_id.friends:
+            friend=User.query.get(f)
+            friend_data=UserData.query.get(f)
+            challenge=Challenges.query.get(friend_data.challenge)
+            friends_list.append(
+                {
+                    "FriendId":f,
+                    "FriendName":friend.name,
+                    "Challenge": "No challenge in progress" if challenge.task==None else challenge.task
+                }
+            )
+        response_object["friends"] = challenge_list
+        return response_object
+        
+@app.route("/api/friend/add", methods=["POST", "GET"])
+@cross_origin()
+def friends_add():
+    response_object = {"status": "success"}
+    if request.method == 'POST':
+        response_object['success']= True
+        data=request.get_json()
+        user_id=data['userId']
+        friend_name=data['FriendName']
+        friend=User.query.filter_by(name=friend_name).first()
+        user_data=UserData.query.get(user_id)
+        friend_data=UserData.query.get(friend.id)
+        if friend.id not in user_data.friends:
+            user_data.friends.append(friend.id)
+        challenge=Challenges.query.get(friend_data.challenge)
+        response_object["FriendId"]:friend.id
+        response_object["FriendName"]:friend.name
+        response_object["Challenge"]: "No challenge in progress" if challenge.task==None else challenge.task
+        return response_object
 

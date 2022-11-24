@@ -17,6 +17,7 @@ class UserData(db.Model):
     stats=db.Column(JSONType)
     modes=db.Column(ScalarListType())
     places=db.Column(JSONType)
+    friends=db.Column(ScalarListType(int))
 
     """
 
