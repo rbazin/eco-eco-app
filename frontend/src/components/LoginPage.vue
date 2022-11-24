@@ -118,5 +118,7 @@ export default {
 <style>
 .login-page {
   background-image: url("../assets/set_1/login_background.png");
+  min-height: 100vh;
+  background-repeat: repeat-y;
 }
 </style>

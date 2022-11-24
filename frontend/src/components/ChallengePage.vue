@@ -1,9 +1,11 @@
 <template>
-  <div class="container">
+  <div class="container" id="challenges-container">
     <!-- Back button -->
     <div @click="goBack" class="px-5 py-5 mb-5">
       <font-awesome-icon class="is-size-2" icon="fa-solid fa-arrow-left" />
     </div>
+
+    <h1 id="challenges-title" class="title is-1 has-text-centered">Challenges</h1>
 
     <!-- Challenges -->
     <div
@@ -17,10 +19,14 @@
 
     <!-- Button to see full list -->
     <div class="content is-centered has-text-centered pt-6">
-      <div @click="changeModal" class="button is-info has-text-centered">
+      <div @click="changeModal" class="button is-size-4 is-rounded is-info has-text-centered">
         See full list
       </div>
     </div>
+
+    <!--  Menu Bar to navigate the app -->
+    <MenuBar @toggle-modal="changeModal"/>
+
     <!--  Modal to display when a feature is not implemented yet -->
     <NotImplemented @toggle-modal="changeModal" :isActive="isActive" />
   </div>
@@ -28,14 +34,16 @@
 
 <script>
 import axios from "axios";
-import { userStore } from "../stores/userStore";
-import { challengeStore } from "../stores/challengeStore";
+import { userStore } from "@/stores/userStore";
+import { challengeStore } from "@/stores/challengeStore";
 
+import MenuBar from "./MenuBar.vue";
 import NotImplemented from "./NotImplemented.vue";
 
 export default {
   name: "ChallengePage",
   components: {
+    MenuBar,
     NotImplemented,
   },
   setup() {
@@ -105,9 +113,17 @@ export default {
 </script>
 
 <style scoped>
-.container {
+#challenges-container {
   background-image: url("../assets/set_1/login_background.png");
-  height: 100vh;
+  min-height: 100vh;
+  background-repeat: repeat-y;
+}
+#challenges-title {
+  color: rgb(6, 98, 132);
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -50px;
 }
 .challenge {
   color: rgb(12, 50, 110);

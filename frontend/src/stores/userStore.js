@@ -7,26 +7,23 @@ export const userStore = defineStore("userStore", {
     userDroplets: 0,
     userStreak: 0,
     userTreeState: 1,
-    userFriendList: [],
+    userFriendList: [
+      {
+        FriendName: "Bob",
+        FriendId: 1,
+        challenge: null,
+      },
+      {
+        FriendName: "Clara",
+        FriendId: 1,
+        challenge: null,
+      }
+    ],
     userActiveChallenge: null, // This may become an object with name and eco fact
     userLoggedIn: false,
     userMeansOfTransport: [],
     userFrequenciesOfTransport: [],
   }),
-  getters: {
-    getUserData() {
-      return {
-        userName: this.userName,
-        userId: this.userId,
-        userDroplets: this.userDroplets,
-        userStreak: this.userStreak,
-        userTreeState: this.userTreeState,
-        userFriendList: this.userFriendList,
-        userActiveChallenge: this.userActiveChallenge,
-        userLoggedIn: this.userLoggedIn,
-      };
-    },
-  },
   actions: {
     async login(userId, userName, userDroplets, userStreak) {
       this.userName = userName;
@@ -42,12 +39,6 @@ export const userStore = defineStore("userStore", {
       this.userStreak = 0;
       this.userTreeState = 1;
       this.userLoggedIn = false;
-    },
-    async updateDroplets(droplets) {
-      this.userDroplets = droplets;
-    },
-    async updateStreak(streak) {
-      this.userStreak = streak;
     },
   },
 });

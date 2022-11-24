@@ -95,7 +95,7 @@ export default {
 
 <style scoped>
 .container {
-  height: 100vh;
+  min-height: 100vh;
   background-image: url("../assets/set_1/login_background.png");
 }
 .fact {
