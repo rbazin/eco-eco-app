@@ -5,7 +5,7 @@ from flask_cors import cross_origin
 from . import app
 from . import db
 from .models import User, UserData, Challenges, Facts
-import json, os, random, time
+import json, os, random, time, base64
 from sqlalchemy.orm.attributes import flag_modified
 import seaborn as sns
 
@@ -22,6 +22,12 @@ def load_user(user_id):
 
 
 ##Methods
+def draw_weekly():
+    return
+    
+def draw_monthly():
+    return
+
 def update_stats(user_data, challenge):
     label=time.strftime("%d-%m-%Y")
     if user_data.stats==None:
@@ -71,6 +77,10 @@ def data_loading():
                 commit_data(new_user)
                 user = User.query.filter_by(name=i["name"]).first()
                 user_data = UserData(id=user.id, droplets=i["droplets"], streak=i["streak"], challenge=i["challenge"], badges=i["badges"])
+                user_data.stats={}
+                for s in i["stats"]:
+                    for key in s:
+                        user_data.stats[key]=s[key]
                 commit_data(user_data)
     return
 
@@ -311,4 +321,14 @@ def challenges_all():
 @app.route("/api/stats", methods=["POST", "GET"])
 @cross_origin()
 def stats():
-    return "Stats"
+    response_object = {"status": "success"}
+    #if request.method == 'POST':
+    response_object['success']= True
+    with open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/graph1.png", "rb") as img:
+        weekly = base64.b64encode(img.read()).decode('utf-8')
+    with open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/graph2.png", "rb") as img:
+        monthly = base64.b64encode(img.read()).decode('utf-8')
+    response_object['weekly']=weekly
+    response_object['monthly']=monthly
+    return response_object
+
