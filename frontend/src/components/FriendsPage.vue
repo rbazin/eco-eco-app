@@ -76,7 +76,6 @@ export default {
     getFriends() {
       if (this.store.userFriendList.length > 0) {
         this.friends = this.store.userFriendList;
-        console.log(this.friends);
       }
       else {
         axios
