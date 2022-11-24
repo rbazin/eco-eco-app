@@ -10,7 +10,7 @@
   {
     "Challenge_id": 2,
     "Task": "Take the bus to school",
-    "Mode": "Busses",
+    "Mode": "Buses",
     "Place": "School",
     "Droplets": 40
   },
@@ -24,7 +24,7 @@
   {
     "Challenge_id": 4,
     "Task": "Take the bus to work",
-    "Mode": "Busses",
+    "Mode": "Buses",
     "Place": "Work",
     "Droplets": 40
   },

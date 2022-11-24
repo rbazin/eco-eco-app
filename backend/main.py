@@ -35,7 +35,7 @@ def update_stats(user_data, challenge):
     if label not in user_data.stats:
         user_data.stats[label]={
             "Walking":0,
-            "Busses":0,
+            "Buses":0,
             "Car":0,
             "Subway":0,
             "Bike":0,
@@ -76,7 +76,7 @@ def data_loading():
                 new_user = User(name=i["name"], password=generate_password_hash(i["password"], method="sha256"))
                 commit_data(new_user)
                 user = User.query.filter_by(name=i["name"]).first()
-                user_data = UserData(id=user.id, droplets=i["droplets"], streak=i["streak"], challenge=i["challenge"], badges=i["badges"])
+                user_data = UserData(id=user.id, droplets=i["droplets"], streak=i["streak"], challenge=i["challenge"], badges=i["badges"], modes=["Walking", "Buses", "Car", "Subway", "Bike", "Trains"])
                 user_data.stats={}
                 for s in i["stats"]:
                     for key in s:
@@ -296,11 +296,11 @@ def challenges_all():
     if request.method == 'POST':
         data=request.get_json()
         user_id=data['userId']
-        user_data=UserData.query.get(user_id) 
-        challenges = Challenges.query.filter(Challenges.id.in_(user_data.modes)).all()
+        user_data=UserData.query.get(user_id)
+        challenges = Challenges.query.filter(Challenges.mode.in_(user_data.modes)).all()
         challenge_list=[]
         
-        for c in challenges[1:]:
+        for c in challenges:
             fact = Facts.query.filter_by(mode=c.mode).first()
             if user_data.favs!=None:
                 favourite=True if c.id in user_data.favs else False
@@ -316,7 +316,7 @@ def challenges_all():
                 }
             )
         response_object['success']= True
-        response_object["challenges"] = challenge_list
+        response_object["challenges"] =challenge_list
         return response_object
 
 @app.route("/api/stats", methods=["POST", "GET"])

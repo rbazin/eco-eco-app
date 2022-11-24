@@ -7,28 +7,28 @@
     "badges": [1, 2, 3],
     "stats":[{"23-11-2022":{
         "Walking":1,
-        "Busses":0,
+        "Buses":0,
         "Car":1,
         "Subway":0,
         "Bike":0,
         "Trains":1
     },"22-11-2022":{
         "Walking":0,
-        "Busses":1,
+        "Buses":1,
         "Car":0,
         "Subway":2,
         "Bike":0,
         "Trains":0
     },"21-11-2022":{
         "Walking":1,
-        "Busses":0,
+        "Buses":0,
         "Car":0,
         "Subway":1,
         "Bike":1,
         "Trains":1
     },"20-11-2022":{
         "Walking":0,
-        "Busses":0,
+        "Buses":0,
         "Car":0,
         "Subway":0,
         "Bike":0,
@@ -45,14 +45,14 @@
     "badges": [1, 2, 3],
     "stats":[{"23-11-2022":{
         "Walking":1,
-        "Busses":0,
+        "Buses":0,
         "Car":1,
         "Subway":0,
         "Bike":0,
         "Trains":1
     },"21-11-2022":{
         "Walking":1,
-        "Busses":0,
+        "Buses":0,
         "Car":0,
         "Subway":1,
         "Bike":1,
