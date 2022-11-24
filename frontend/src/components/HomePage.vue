@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div class="main-container pb-5">
     <!--  Header with droplets streaks and profile picture -->
     <div class="is-size-2 is-centered columns py-6 is-mobile">
       <div class="column is-narrow has-text-centered">
@@ -31,7 +31,7 @@
     <div id="main-content" class="mb-3">
       <div class="columns">
         <figure @click="clickOnCloud" id="cloud" class="column has-text-centered">
-          <img :src="cloudPath" max-width="180px" />
+          <img :src="cloudPath">
           <p id="cloud-text">{{ challengeText }}</p>
         </figure>
         <figure id="tree" class="column has-text-centered">
@@ -41,7 +41,7 @@
     </div>
 
     <!--  Menu Bar to navigate the app -->
-    <MenuBar @toggle-modal="changeModal" id="menu-bar" />
+    <MenuBar @toggle-modal="changeModal"/>
 
     <!--  Modal to display when a feature is not implemented yet -->
     <NotImplemented @toggle-modal="changeModal" :isActive="isActive" />
@@ -79,6 +79,7 @@ export default {
   },
   data() {
     return {
+      // We get most of the data from the userStore
       isActive: false,
       clearChallengeModal: false,
       droplets: this.store.userDroplets,
@@ -152,12 +153,20 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Sofia&display=swap");
 .main-container {
+  position: relative;
   background-image: url("../assets/set_1/login_background.png");
-  height: 100vh;
-}
+  min-height: 100vh;
+  background-repeat: repeat-y;
+  }
 .columns {
   width: 100vw;
   margin: 0;
+}
+.column {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;  
 }
 img {
   width: 100%;
