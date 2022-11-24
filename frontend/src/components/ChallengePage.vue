@@ -85,10 +85,8 @@ export default {
         this.challenges = challenge_store.challenges;
       } else {
         axios
-          .get("http://localhost:5000/api/challenges", {
-            params: {
+          .post("http://localhost:5000/api/challenges", {
               userId: user_store.userId, // the get request sends the id of the user to personalize the challenges sent
-            },
           })
           .then((response) => {
             console.log(response);

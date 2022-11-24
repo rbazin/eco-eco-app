@@ -1,0 +1,17 @@
+[{
+    "name":"Leonie",
+    "password":"hci",
+    "droplets":200,
+    "streak":50, 
+    "challenge":1,
+    "badges": [1, 2, 3]
+}, 
+{
+    "name":"Juan",
+    "password":"hci",
+    "droplets":125,
+    "streak":80, 
+    "challenge":3,
+    "badges": [1, 2, 3]
+}
+]

@@ -19,41 +19,62 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+##Methods
+def update_stats(user_data, challenge):
+    print("Here")
+    return
+
+def commit_data(data):
+    with app.app_context():
+        db.session.add(data)
+        db.session.commit()
+    return
+
 def data_loading():
     # Challenges
-
     with app.app_context():
         db.session.query(Challenges).delete()
         db.session.commit()
         db.session.query(Facts).delete()
         db.session.commit()
 
-    f = open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/challenges.json")
-    data = json.load(f)
-    for i in data:
-        x = Challenges(
-            task=i["Task"], mode=i["Mode"], place=i["Place"], droplets=i["Droplets"]
-        )
-        with app.app_context():
-            db.session.add(x)
-            db.session.commit()
-    f = open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/facts.json")
-    data = json.load(f)
-    for i in data:
-        x = Facts(mode=i["Mode"], fact=i["Fact"])
-        with app.app_context():
-            db.session.add(x)
-            db.session.commit()
+        f = open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/challenges.json")
+        data = json.load(f)
+        for i in data:
+            x = Challenges(task=i["Task"], mode=i["Mode"], place=i["Place"], droplets=i["Droplets"])
+            commit_data(x)
+        f = open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/facts.json")
+        data = json.load(f)
+        for i in data:
+            x = Facts(mode=i["Mode"], fact=i["Fact"])
+            commit_data(x)
+        f = open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/friends.json")
+        data = json.load(f)
+        for i in data:
+            user = User.query.filter_by(name=i["name"]).first()
+            if not (user):
+                new_user = User(name=i["name"], password=generate_password_hash(i["password"], method="sha256"))
+                commit_data(new_user)
+                user = User.query.filter_by(name=i["name"]).first()
+                user_data = UserData(id=user.id, droplets=i["droplets"], streak=i["streak"], challenge=i["challenge"], badges=i["badges"])
+                commit_data(user_data)
     return
-
 
 def dict_helper(objlist):
     result = [item.obj_to_dict() for item in objlist]
     return result
 
-
 data_loading()
 
+@login_manager.user_loader
+def load_user(user_id):
+    # since the user_id is just the primary key of our user table, use it in the query for the user
+    return User.query.get(int(user_id))
+
+@app.route("/")
+def home():
+    return("Home")
+    #return(jsonify(challenges=dict_helper(Challenges.query.all())))
 
 @app.route("/api/login", methods=["POST", "GET"])
 @cross_origin()
@@ -78,6 +99,7 @@ def login():
             response_object["userName"] = user.name
             response_object["userDroplets"] = user_data.droplets
             response_object["userStreak"] = user_data.streak
+            response_object['success']= True
             return jsonify(response_object)
     else:
         return {"status": "fail"}
@@ -130,6 +152,7 @@ def questionnnaire1():
         user_data = UserData.query.get(data["userId"])
         user_data.modes = data["meansOfTransport"]
         db.session.commit()
+        response_object['success']= True
         return response_object
     else:
         return {"status": "fail"}
@@ -151,6 +174,7 @@ def questionnnaire2():
         user_data.places = places
         db.session.commit()
         # print(UserData.query.get(data.userId))
+        response_object['success']= True
         return response_object
     else:
         return {"status": "fail"}
@@ -164,13 +188,14 @@ def challenge_complete():
         user_id=data['userId']
         user_data=UserData.query.get(user_id)
         challenges=Challenges.query.get(user_data.challenge)
-        user_data.droplets+=int(challenges.droplets)
+        user_data.droplets+=challenges.droplets
         user_data.streak+=1
         user_data.challenge=0
         response_object['userDroplets']=user_data.droplets
         response_object['streak']=user_data.streak
-        response_object['success']= True
         db.session.commit()
+        response_object['success']= True
+        update_stats(user_data, challenges)
         return response_object
     else:
         return {'status': 'fail'}
@@ -195,22 +220,32 @@ def challenge_abort():
 @cross_origin()
 def challenges_basic():
     response_object = {"status": "success"}
-    challenge_ids = [random.choice(list(range(2, 12))) for x in range(3)]
-    challenge_list = []
-    for i in range(len(challenge_ids)):
-        challenge = Challenges.query.get(challenge_ids[i])
-        fact = Facts.query.filter_by(mode=challenge.mode).first()
-        challenge_list.append(
-            {
-                "id": challenge.id,
-                "title": challenge.task,
-                "droplets": challenge.droplets,
-                "fact": fact.fact,
-            }
-        )
-    response_object["challenges"] = challenge_list
-    response_object['success']= True
-    return response_object
+    if request.method == 'POST':
+        data=request.get_json()
+        user_id=data['userId']
+        user_data=UserData.query.get(user_id) 
+        challenge_ids = [random.choice(list(range(2, 12))) for x in range(3)] #add user personalization
+        challenge_list = []
+        for i in range(len(challenge_ids)):
+            challenge = Challenges.query.get(challenge_ids[i])
+            fact = Facts.query.filter_by(mode=challenge.mode).first()
+            if user_data.favs!=None:
+                favourite=True if challenge_ids[i] in user_data.favs else False
+            else:
+                favourite=False
+            challenge_list.append(
+                {
+                    "id": challenge.id,
+                    "title": challenge.task,
+                    "droplets": challenge.droplets,
+                    "fact": fact.fact,
+                    "favourite": favourite,
+                }
+            )
+        response_object['success']= True
+        response_object["challenges"] = challenge_list
+        return response_object
+    
 
 @app.route('/api/accept_challenge', methods=['POST', 'GET'])
 @cross_origin()
@@ -225,3 +260,38 @@ def challenge_select():
         db.session.commit()
         response_object['success']= True
         return response_object
+
+@app.route("/api/challenge/all", methods=["POST", "GET"])
+@cross_origin()
+def challenges_all():
+    response_object = {"status": "success"}
+    if request.method == 'POST':
+        data=request.get_json()
+        user_id=data['userId']
+        user_data=UserData.query.get(user_id) 
+        challenges = Challenges.query.filter(Challenges.id.in_(user_data.modes)).all()
+        challenge_list=[]
+        
+        for c in challenges[1:]:
+            fact = Facts.query.filter_by(mode=c.mode).first()
+            if user_data.favs!=None:
+                favourite=True if c.id in user_data.favs else False
+            else:
+                favourite=False
+            challenge_list.append(
+                {
+                    "id": c.id,
+                    "title": c.task,
+                    "droplets": c.droplets,
+                    "fact": fact.fact,
+                    "favourite": favourite
+                }
+            )
+        response_object['success']= True
+        response_object["challenges"] = challenge_list
+        return response_object
+
+@app.route("/api/stats", methods=["POST", "GET"])
+@cross_origin()
+def stats():
+    return "Stats"
