@@ -19,7 +19,7 @@
 
     <!-- Button to see full list -->
     <div class="content is-centered has-text-centered pt-6">
-      <div @click="changeModal" class="button is-size-4 is-rounded is-info has-text-centered">
+      <div @click="goToFullList" class="button is-size-4 is-rounded is-info has-text-centered">
         See full list
       </div>
     </div>
