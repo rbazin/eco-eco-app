@@ -1,5 +1,5 @@
 <template>
-  <div class="container main-container">
+  <div class="container main-container-friend-page">
     <!-- Back button -->
     <div @click="goBack" class="px-5 py-5 mb-5">
       <font-awesome-icon class="is-size-2" icon="fa-solid fa-arrow-left" />
@@ -15,6 +15,16 @@
 
       <!--  Menu Bar to navigate the app -->
       <MenuBar @toggle-modal="changeModal"/>
+
+      <!-- Add friend button -->
+      <div id="add-button" @click="goToAddFriend" class="has-text-centered px-4 py-5">
+          <span class="icon is-size-1"
+            ><font-awesome-icon
+                id="profile"
+                color="white"
+                icon="fa-solid fa-circle-plus fa-5x"
+            /></span>
+      </div>
 
     </div>
     <!--  Modal to display when a feature is not implemented yet -->
@@ -53,6 +63,9 @@ export default {
     }
   },
   methods: {
+    goToAddFriend() {
+     this.$router.push("/add-friend");
+    },
     changeModal() {
       // change the value of isActive
       this.isActive = !this.isActive;
@@ -66,17 +79,16 @@ export default {
         console.log(this.friends);
       }
       else {
-        // TODO : check if the API call is compatible with the backend
         axios
-            .get("http://localhost:5000/api/friends", {
+            .get("http://localhost:5000/api/friend/list", {
               params: {
-                user_id: this.store.user_id,
+                UserId: this.store.userId,
               },
             })
             .then((response) => {
               console.log(response);
               if (response.data.success) {
-                this.friends = response.data.friends;
+                this.friends = response.data.friends; // assuming the list is called "friends"
                 this.store.userFriendList = response.data.friends;
               }
             })
@@ -96,10 +108,20 @@ export default {
   top: -50px;
   color: #066284;
 }
-.main-container {
+.main-container-friend-page {
   min-height: 100vh;
   background-image: url("../assets/set_1/login_background.png");
   background-repeat: repeat-y;
+}
+#add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(32, 196, 211, 0.27);
+  border-radius: 35px;
+  max-width: 300px;
+  width: 80%;
+  margin: 0 auto;
 }
 
 </style>

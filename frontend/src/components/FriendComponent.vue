@@ -8,7 +8,7 @@
                 icon="fa-solid fa-user fa-5x"
             /></span>
       <div class="column">
-        <p class="is-size-4 username">{{ friend.userName }}</p>
+        <p class="is-size-4 username">{{ friend.FriendName }}</p>
       </div>
       <span class="column icon is-size-3"
       ><font-awesome-icon

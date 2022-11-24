@@ -9,16 +9,14 @@ export const userStore = defineStore("userStore", {
     userTreeState: 1,
     userFriendList: [
       {
-        userName: "Bob",
-        userId: 1,
-        userDroplets: 4,
-        userStreak: 3,
+        FriendName: "Bob",
+        FriendId: 1,
+        challenge: null,
       },
       {
-        userName: "Clara",
-        userId: 1,
-        userDroplets: 4,
-        userStreak: 3,
+        FriendName: "Clara",
+        FriendId: 1,
+        challenge: null,
       }
     ],
     userActiveChallenge: null, // This may become an object with name and eco fact
