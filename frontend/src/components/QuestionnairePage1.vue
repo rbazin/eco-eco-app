@@ -58,7 +58,6 @@ export default {
         "Car",
         "Subway",
         "Bike",
-        "Subway",
         "Trains"
       ],
       selectedMeansOfTransport: [],

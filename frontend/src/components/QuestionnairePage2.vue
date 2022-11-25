@@ -14,7 +14,7 @@
     <form
       v-for="(transport, index) in frequenciesOfPlaces"
       :key="index"
-      class="field is-grouped is-grouped-multiline mx-6"
+      class="field is-grouped is-grouped-multiline mx-6 is-align-items-center is-justify-content-center"
     >
       <div class="pb-4">
         <label class="label">{{ sentenceCase(transport.mean) }}</label>

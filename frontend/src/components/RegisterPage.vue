@@ -19,7 +19,7 @@
           <input
             class="input column is-6"
             type="text"
-            :class="{ 'is-danger': !isUsernameValid }"
+            :class="{ 'is-danger': !isValid }"
             placeholder="Username"
             v-model="username"
           />
@@ -38,7 +38,7 @@
             class="input column is-6"
             type="password"
             placeholder="Password"
-            :class="{ 'is-danger': !isUsernameValid }"
+            :class="{ 'is-danger': !isValid }"
             v-model="password"
           />
         </div>
@@ -56,7 +56,7 @@
             class="input column is-6"
             type="password"
             placeholder="Confirm password"
-            :class="{ 'is-danger': !isUsernameValid }"
+            :class="{ 'is-danger': !isValid }"
             v-model="confirmPassword"
           />
         </div>
