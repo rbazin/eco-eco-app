@@ -154,7 +154,7 @@ def signup():
         db.session.commit()
 
         user = User.query.filter_by(name=name).first()
-        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=0, friend=[(User.query.filter_by(name=name).first()).id])
+        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=0, friends=[(User.query.filter_by(name=name).first()).id])
         db.session.add(user_data)
         db.session.commit()
         response_object["success"] = True
@@ -378,5 +378,58 @@ def friends_add():
         response_object["FriendId"]:friend.id
         response_object["FriendName"]:friend.name
         response_object["Challenge"]: "No challenge in progress" if challenge.task is None else challenge.task
+        db.session.commit()
         return response_object
+
+@app.route("/api/favourite", methods=["POST", "GET"])
+@cross_origin()
+def favourite():
+    response_object = {"status": "success"}
+    if request.method == 'POST':
+        response_object['success']= True
+        data=request.get_json()
+        user_id=data['userId']
+        challenge_id=data['challengeId']
+        fav=data['challengeId']
+        user_data=UserData.query.get(user_id)
+        if user_data.favs is None:
+            user_data.favs=[]
+        if fav:
+            if challenge_id not in user_data.favs:
+                user_data.favs.append(challenge_id)
+        else:
+            if challenge_id in user_data.favs:
+                user_data.favs.remove(challenge_id)
+        db.session.commit()
+        return response_object
+
+@app.route("/api/challenge/favs", methods=["POST", "GET"])
+@cross_origin()
+def favourites_list():
+    response_object = {"status": "success"}
+    if request.method == 'POST':
+        response_object['success']= True
+        data=request.get_json()
+        user_id=data['userId']
+        user_data=UserData.query.get(user_id)
+        challenges = Challenges.query.filter(Challenges.id.in_(user_data.favs)).all()
+        challenge_list=[]
+        
+        for c in challenges:
+            fact = Facts.query.filter_by(mode=c.mode).first()
+            challenge_list.append(
+                {
+                    "id": c.id,
+                    "title": c.task,
+                    "droplets": c.droplets,
+                    "fact": fact.fact,
+                    "favourite": True
+                }
+            )
+        response_object['success']= True
+        response_object["challenges"] =challenge_list
+        return response_object
+        
+
+
 
