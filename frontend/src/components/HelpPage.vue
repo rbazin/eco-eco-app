@@ -2,7 +2,7 @@
   <div class="container">
     <div class="HelpPage">
       
-      <!-- Back button -->
+      <!-- Back button --> 
       <div @click="goBack" class="px-5 py-5">
         <font-awesome-icon class="is-size-2" icon="fa-solid fa-arrow-left" />
       </div>

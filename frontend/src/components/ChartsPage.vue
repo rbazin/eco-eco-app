@@ -9,7 +9,7 @@
       <!-- Tutorial title -->
       <header>
         <p align="center">Progress</p>
-      </header>
+      </header> 
 
       <!-- <div class="buttons">
         <button @click="showWeeklyGrpah" class="button is-primary is-light">Weekly</button>
