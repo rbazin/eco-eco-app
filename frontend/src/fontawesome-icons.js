@@ -5,12 +5,10 @@ import {
   faBoltLightning,
   faCircleUser,
   faArrowLeft,
-  faUser,
-  faHand,
-    faCirclePlus,
+  faChevronLeft,
+  faChevronRight
 } from "@fortawesome/free-solid-svg-icons";
 
-
-library.add(faDroplet, faBoltLightning, faCircleUser, faArrowLeft, faUser, faHand, faCirclePlus);
+library.add(faDroplet, faBoltLightning, faCircleUser, faArrowLeft,faChevronLeft, faChevronRight);
 
 export default FontAwesomeIcon;
