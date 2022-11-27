@@ -87,7 +87,7 @@ export default {
         .post("http://localhost:5000/api/questionnaire_2", {
           userId: this.store.userId,
           userName: this.store.userName,
-          frequenciesOfPlaces: this.frequenciesOfPlaces, // unoreded list of means of transport object, eg: {mean: "Busses", frequency: "daily"}
+          frequenciesOfPlaces: this.frequenciesOfPlaces, // unoreded list of means of transport object, eg: {mean: "Buses", frequency: "daily"}
         })
         .then((response) => {
           if (response.data.status === "success") {

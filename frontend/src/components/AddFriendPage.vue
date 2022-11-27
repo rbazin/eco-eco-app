@@ -113,6 +113,7 @@ export default {
 #friends-image {
   position: relative;
   width: 75%;
+  max-width: 400px;
   left: 50%;
   transform: translateX(-50%);
   top: 100px;

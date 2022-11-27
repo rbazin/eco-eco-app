@@ -57,11 +57,9 @@ export default {
   methods: {
     getAllChallenges() {
       axios
-          .get("http://localhost:5000/api/challenge/all",
+          .post("http://localhost:5000/api/challenge/all",
               {
-                params: {
-                  UserId : this.user_store.userId,
-                },
+                  userId : this.user_store.userId,
               }
           )
           .then((response) => {

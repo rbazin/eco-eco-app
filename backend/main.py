@@ -35,7 +35,7 @@ def update_stats(user_data, challenge):
     if label not in user_data.stats:
         user_data.stats[label]={
             "Walking":0,
-            "Busses":0,
+            "Buses":0,
             "Car":0,
             "Subway":0,
             "Bike":0,
@@ -76,7 +76,7 @@ def data_loading():
                 new_user = User(name=i["name"], password=generate_password_hash(i["password"], method="sha256"))
                 commit_data(new_user)
                 user = User.query.filter_by(name=i["name"]).first()
-                user_data = UserData(id=user.id, droplets=i["droplets"], streak=i["streak"], challenge=i["challenge"], badges=i["badges"])
+                user_data = UserData(id=user.id, droplets=i["droplets"], streak=i["streak"], challenge=i["challenge"], badges=i["badges"], modes=["Walking", "Buses", "Car", "Subway", "Bike", "Trains"])
                 user_data.stats={}
                 for s in i["stats"]:
                     for key in s:
@@ -154,7 +154,7 @@ def signup():
         db.session.commit()
 
         user = User.query.filter_by(name=name).first()
-        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=0, friend=[(User.query.filter_by(name=name).first()).id])
+        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=0, friends=[(User.query.filter_by(name=name).first()).id])
         db.session.add(user_data)
         db.session.commit()
         response_object["success"] = True
@@ -251,7 +251,8 @@ def challenges_basic():
         data=request.get_json()
         user_id=data['userId']
         user_data=UserData.query.get(user_id) 
-        challenge_ids = [random.choice(list(range(2, 12))) for x in range(3)] #add user personalization
+        c=random.choice(list(range(2, 10)))
+        challenge_ids = [ c+x for x in range(3)] #add user personalization
         challenge_list = []
         for i in range(len(challenge_ids)):
             challenge = Challenges.query.get(challenge_ids[i])
@@ -295,11 +296,11 @@ def challenges_all():
     if request.method == 'POST':
         data=request.get_json()
         user_id=data['userId']
-        user_data=UserData.query.get(user_id) 
-        challenges = Challenges.query.filter(Challenges.id.in_(user_data.modes)).all()
+        user_data=UserData.query.get(user_id)
+        challenges = Challenges.query.filter(Challenges.mode.in_(user_data.modes)).all()
         challenge_list=[]
         
-        for c in challenges[1:]:
+        for c in challenges:
             fact = Facts.query.filter_by(mode=c.mode).first()
             if user_data.favs!=None:
                 favourite=True if c.id in user_data.favs else False
@@ -315,7 +316,7 @@ def challenges_all():
                 }
             )
         response_object['success']= True
-        response_object["challenges"] = challenge_list
+        response_object["challenges"] =challenge_list
         return response_object
 
 @app.route("/api/stats", methods=["POST", "GET"])
@@ -353,7 +354,7 @@ def friends_list():
                 {
                     "FriendId":f,
                     "FriendName":friend.name,
-                    "Challenge": "No challenge in progress" if challenge.task==None else challenge.task
+                    "Challenge": "No challenge in progress" if challenge.task is None else challenge.task
                 }
             )
         response_object["friends"] = challenge_list
@@ -376,6 +377,59 @@ def friends_add():
         challenge=Challenges.query.get(friend_data.challenge)
         response_object["FriendId"]:friend.id
         response_object["FriendName"]:friend.name
-        response_object["Challenge"]: "No challenge in progress" if challenge.task==None else challenge.task
+        response_object["Challenge"]: "No challenge in progress" if challenge.task is None else challenge.task
+        db.session.commit()
         return response_object
+
+@app.route("/api/favourite", methods=["POST", "GET"])
+@cross_origin()
+def favourite():
+    response_object = {"status": "success"}
+    if request.method == 'POST':
+        response_object['success']= True
+        data=request.get_json()
+        user_id=data['userId']
+        challenge_id=data['challengeId']
+        fav=data['challengeId']
+        user_data=UserData.query.get(user_id)
+        if user_data.favs is None:
+            user_data.favs=[]
+        if fav:
+            if challenge_id not in user_data.favs:
+                user_data.favs.append(challenge_id)
+        else:
+            if challenge_id in user_data.favs:
+                user_data.favs.remove(challenge_id)
+        db.session.commit()
+        return response_object
+
+@app.route("/api/challenge/favs", methods=["POST", "GET"])
+@cross_origin()
+def favourites_list():
+    response_object = {"status": "success"}
+    if request.method == 'POST':
+        response_object['success']= True
+        data=request.get_json()
+        user_id=data['userId']
+        user_data=UserData.query.get(user_id)
+        challenges = Challenges.query.filter(Challenges.id.in_(user_data.favs)).all()
+        challenge_list=[]
+        
+        for c in challenges:
+            fact = Facts.query.filter_by(mode=c.mode).first()
+            challenge_list.append(
+                {
+                    "id": c.id,
+                    "title": c.task,
+                    "droplets": c.droplets,
+                    "fact": fact.fact,
+                    "favourite": True
+                }
+            )
+        response_object['success']= True
+        response_object["challenges"] =challenge_list
+        return response_object
+        
+
+
 
