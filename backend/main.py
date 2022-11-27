@@ -249,9 +249,11 @@ def challenge_complete():
         user_data=update_badges(user_data, challenges)
         user_data=update_stats(user_data, challenges)
         flag_modified(user_data, "stats")
+        flag_modified(user_data, "badges")
         db.session.commit()
         user_data=UserData.query.get(user_id)
-        print("Stats", user_data.stats)
+        #print("Stats", user_data.stats)
+        #print("Badges", user_data.stats)
         return response_object
     else:
         return {'status': 'fail'}
@@ -455,9 +457,31 @@ def favourites_list():
                     "favourite": True
                 }
             )
-        response_object['success']= True
         response_object["challenges"] =challenge_list
         return response_object
+        
+@app.route("/api/badges", methods=["POST", "GET"])
+@cross_origin()
+def badges():
+    response_object = {"status": "success"}
+    if request.method == 'POST':
+        response_object['success']= True
+        data=request.get_json()
+        user_id=data['userId']
+        user_data=UserData.query.get(user_id)
+        badges=Badges.query.all()
+        badges_list=[]
+        for b in badges:
+            badges_list.append(
+                {
+                    "BadgeId":b.id,
+                    "BadgeName":b.badge,
+                    "Possessed": True if b.id in user_data.badges else False
+                }
+            )
+        response_object["badges"] =badges_list
+        return response_object
+        
         
 
 

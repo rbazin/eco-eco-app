@@ -57,10 +57,8 @@ export default {
       }
       else {
         axios
-          .get("http://localhost:5000/api/badges", {
-            params: {
-              UserId: this.user_store.userId,
-            }
+          .post("http://localhost:5000/api/badges", {
+              userId: this.user_store.userId,
           })
           .then((response) => {
             if (response.data.success) {
