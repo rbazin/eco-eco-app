@@ -483,6 +483,27 @@ def badges():
         return response_object
         
         
+@app.route('/api/friend', methods=['POST', 'GET'])
+@cross_origin()
+def friend_profile():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        response_object['success']= True
+        data=request.get_json()
+        user_id=data['userId']
+        friend_id=data['friendId']
+        friend=User.query.get(friend_id)
+        friend_data=UserData.query.get(friend_id)
+        response_object['FriendId']=friend_id
+        response_object['FriendName']=friend.name
+        response_object['Droplets']=friend_data.droplets
+        response_object['Streaks']=friend_data.streak
+        badges = Badges.query.filter(Badges.id.in_(friend_data.badges)).all()
+        response_object['Badges']=[b.badge for b in badges]
+        return response_object
+
+
+
 
 
 
