@@ -7,7 +7,7 @@
     <h1 id="badges-title" class="title is-1 has-text-centered">Badges</h1>
 
     <!-- Badges -->
-    <BadgeComponent v-for="(badge, index) in badges" :key="index" :badge="badge" class="mb-5" />
+    <BadgeComponent v-for="(badge, index) in badges" :key="index" :badge="badge" class="mt-5" />
 
     <!--  Menu Bar to navigate the app -->
     <MenuBar @toggle-modal="changeModal"/>
