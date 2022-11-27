@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user
 from flask_cors import cross_origin
 from . import app
 from . import db
-from .models import User, UserData, Challenges, Facts
+from .models import User, UserData, Challenges, Facts, Badges
 import json, os, random, time, base64
 from sqlalchemy.orm.attributes import flag_modified
 #import seaborn as sns
@@ -44,6 +44,26 @@ def update_stats(user_data, challenge):
     user_data.stats[label][challenge.mode]+=1
     return user_data
 
+def update_badges(user_data, challenges):
+    badges=Badges.query.all()
+    for badge in badges:
+        if badge.id not in user_data.badges:
+            if badge.criteria=="droplets":
+                if user_data.droplets>int(badge.condition):
+                    user_data.badges.append(badge.id)
+            elif badge.criteria=="streak":
+                if user_data.streak>int(badge.condition):
+                    user_data.badges.append(badge.id)
+            elif badge.criteria=="friends":
+                if len(user_data.friends)>int(badge.condition):
+                    user_data.badges.append(badge.id)
+            elif badge.criteria=="challenge":
+                if challenges.mode==badge.condition:
+                    user_data.badges.append(badge.id)
+            else:
+                print("Unknown badge error!")
+    return user_data
+
 def commit_data(data):
     with app.app_context():
         db.session.add(data)
@@ -56,6 +76,8 @@ def data_loading():
         db.session.query(Challenges).delete()
         db.session.commit()
         db.session.query(Facts).delete()
+        db.session.commit()
+        db.session.query(Badges).delete()
         db.session.commit()
 
         f = open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/challenges.json")
@@ -82,6 +104,12 @@ def data_loading():
                     for key in s:
                         user_data.stats[key]=s[key]
                 commit_data(user_data)
+        f = open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/badges.json")
+        data = json.load(f)
+        for i in data:
+            x = Badges(badge=i["Badge"], criteria=i["Criteria"], condition=str(i["Condition"]))
+            commit_data(x)
+
     return
 
 def dict_helper(objlist):
@@ -154,7 +182,7 @@ def signup():
         db.session.commit()
 
         user = User.query.filter_by(name=name).first()
-        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=0, friends=[(User.query.filter_by(name=name).first()).id])
+        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=0, friends=[(User.query.filter_by(name=name).first()).id], badges=[])
         db.session.add(user_data)
         db.session.commit()
         response_object["success"] = True
@@ -218,6 +246,7 @@ def challenge_complete():
         response_object['userDroplets']=user_data.droplets
         response_object['streak']=user_data.streak
         response_object['success']= True
+        user_data=update_badges(user_data, challenges)
         user_data=update_stats(user_data, challenges)
         flag_modified(user_data, "stats")
         db.session.commit()
