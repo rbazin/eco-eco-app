@@ -54,7 +54,7 @@ export default {
       userName: this.store.userName,
       possibleMeansOfTransport: [
         "Walking",
-        "Busses",
+        "Buses",
         "Car",
         "Subway",
         "Bike",

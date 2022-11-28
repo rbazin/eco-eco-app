@@ -328,7 +328,12 @@ def challenges_all():
         data=request.get_json()
         user_id=data['userId']
         user_data=UserData.query.get(user_id)
-        challenges = Challenges.query.filter(Challenges.mode.in_(user_data.modes)).all()
+        print(user_data.modes)
+        if not(user_data.modes == []):
+            challenges = Challenges.query.filter(Challenges.mode.in_(user_data.modes)).all()
+        else:
+            challenges = Challenges.query.all()[1:]
+        print(challenges)
         challenge_list=[]
         
         for c in challenges:
