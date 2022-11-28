@@ -69,8 +69,9 @@ export default {
     },
     addFriend() {
       // send a request to the backend to add a friend
-      axios.post("http://localhost:5000/friend/add", {
-        username: this.username,
+      axios.post("http://localhost:5000/api/friend/add", {
+        userId: this.store.userId,
+        friendName: this.username,
       })
       .then((response) => {
         console.log(response);
@@ -113,6 +114,7 @@ export default {
 #friends-image {
   position: relative;
   width: 75%;
+  max-width: 400px;
   left: 50%;
   transform: translateX(-50%);
   top: 100px;

@@ -14,15 +14,15 @@
     <!-- Form with multiselect -->
     <form class="field is-grouped is-grouped-multiline mx-5 my-6">
       <div
-        v-for="(mean, index) in possibleMeansOfTransport"
-        :key="index"
-        class="control"
+          v-for="(mean, index) in possibleMeansOfTransport"
+          :key="index"
+          class="control"
       >
         <a
-          @click="toggleSelect(mean)"
-          class="button is-rounded"
-          :class="{ 'is-info': isActive(mean) }"
-          >{{ sentenceCase(mean) }}</a
+            @click="toggleSelect(mean)"
+            class="button is-rounded"
+            :class="{ 'is-info': isActive(mean) }"
+        >{{ sentenceCase(mean) }}</a
         >
       </div>
     </form>
@@ -39,7 +39,7 @@
 </template>
 <script>
 import axios from "axios";
-import { userStore } from "../stores/userStore";
+import {userStore} from "../stores/userStore";
 
 export default {
   name: "QuestionnairePage",
@@ -53,21 +53,21 @@ export default {
     return {
       userName: this.store.userName,
       possibleMeansOfTransport: [
+        "Walking",
         "Buses",
         "Car",
-        "Trains",
-        "Bike",
         "Subway",
-        "Airplanes",
+        "Bike",
+        "Trains"
       ],
-      selectedMeansOfTransport: ["walking"],
+      selectedMeansOfTransport: [],
     };
   },
   methods: {
     toggleSelect(mean) {
       if (this.selectedMeansOfTransport.includes(mean)) {
         this.selectedMeansOfTransport = this.selectedMeansOfTransport.filter(
-          (item) => item !== mean
+            (item) => item !== mean
         );
       } else {
         this.selectedMeansOfTransport.push(mean);
@@ -76,9 +76,9 @@ export default {
     },
     sentenceCase(word) {
       let text = word
-        .split(". ")
-        .map((e) => e.charAt(0).toUpperCase() + e.substring(1).toLowerCase())
-        .join(". ");
+          .split(". ")
+          .map((e) => e.charAt(0).toUpperCase() + e.substring(1).toLowerCase())
+          .join(". ");
       return text;
     },
     isActive(mean) {
@@ -86,21 +86,21 @@ export default {
     },
     submit() {
       axios
-        .post("http://localhost:5000/api/questionnaire_1", {
-          userId: this.store.userId,
-          userName: this.store.userName,
-          meansOfTransport: this.selectedMeansOfTransport, // unoreded list of selected means of transport
-        })
-        .then((response) => {
-          if (response.data.status === "success") {
-            // what to do if the request is not a success ? (probably display an error message)
-            this.store.userMeansOfTransport = this.selectedMeansOfTransport;
-            this.$router.push("/questionnaire_2");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+          .post("http://localhost:5000/api/questionnaire_1", {
+            userId: this.store.userId,
+            userName: this.store.userName,
+            meansOfTransport: this.selectedMeansOfTransport, // unoreded list of selected means of transport
+          })
+          .then((response) => {
+            if (response.data.status === "success") {
+              // what to do if the request is not a success ? (probably display an error message)
+              this.store.userMeansOfTransport = this.selectedMeansOfTransport;
+              this.$router.push("/questionnaire_2");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     },
   },
 };
@@ -111,14 +111,17 @@ export default {
 .is-title {
   font-family: "Dancing Script", cursive;
 }
+
 .container {
   height: 100vh;
   background-image: url("../assets/set_1/login_background.png");
 }
+
 .content h1,
 h2 {
   color: rgb(12, 50, 110);
 }
+
 #gradient-text {
   border-radius: 35px;
   color: rgb(12, 50, 110);

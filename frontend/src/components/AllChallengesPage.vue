@@ -30,6 +30,7 @@ import MenuBar from "./MenuBar.vue";
 import NotImplemented from "./NotImplemented.vue";
 
 import {userStore} from "@/stores/userStore";
+import {challengeStore} from "@/stores/challengeStore";
 
 import axios from "axios";
 
@@ -41,8 +42,10 @@ export default {
   },
   setup() {
     const user_store = userStore();
+    const challenge_store = challengeStore();
     return {
       user_store,
+      challenge_store,
     };
   },
   mounted() {
@@ -56,20 +59,25 @@ export default {
   },
   methods: {
     getAllChallenges() {
-      axios
-          .post("http://localhost:5000/api/challenge/all",
-              {
-                  userId : this.user_store.userId,
+      if (this.challenge_store.allChallenges.length > 0) {
+        this.challenges = this.challenge_store.allChallenges;
+      } else {
+        axios
+            .post("http://localhost:5000/api/challenge/all",
+                {
+                  userId: this.user_store.userId,
+                }
+            )
+            .then((response) => {
+              if (response.data.success) {
+                this.challenges = response.data.challenges;
+                this.challenge_store.allChallenges = response.data.challenges;
               }
-          )
-          .then((response) => {
-            if (response.data.success) {
-              this.challenges = response.data.challenges;
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+      }
     },
     goToChallenge(challenge) {
       this.$router.push({

@@ -54,6 +54,13 @@ class Facts(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     mode=db.Column(db.String(200))
     fact=db.Column(db.String(1000))
+
+class Badges(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    badge=db.Column(db.String(1000))
+    criteria=db.Column(db.String(100))
+    condition=db.Column(db.String(50))
+
     
 
 

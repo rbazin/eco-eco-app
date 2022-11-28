@@ -15,7 +15,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
 
 db = SQLAlchemy(app)
 
-from .models import User, UserData, Challenges, Facts
+from .models import User, UserData, Challenges, Facts, Badges
 
 
 with app.app_context():

@@ -8,13 +8,13 @@
           alt="Home icon"
         />
       </router-link>
-      <div @click="openModal" class="px-1">
+      <router-link to="/badges" class="px-1">
         <img
           class="image is-48x60 content"
           src="../assets/set_2/badge.png"
           alt="Badge icon"
         />
-      </div>
+      </router-link>
       <router-link to="/home" class="px-1">
         <img
           class="image is-48x60 content"

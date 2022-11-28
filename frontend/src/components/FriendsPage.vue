@@ -74,15 +74,9 @@ export default {
       this.$router.push("/home");
     },
     getFriends() {
-      if (this.store.userFriendList.length > 0) {
-        this.friends = this.store.userFriendList;
-      }
-      else {
         axios
-            .get("http://localhost:5000/api/friend/list", {
-              params: {
-                UserId: this.store.userId,
-              },
+            .post("http://localhost:5000/api/friend/list", {
+                userId: this.store.userId,
             })
             .then((response) => {
               console.log(response);
@@ -94,7 +88,6 @@ export default {
             .catch((error) => {
               console.log(error);
             });
-      }
     },
   }
 };

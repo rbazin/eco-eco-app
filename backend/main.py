@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user
 from flask_cors import cross_origin
 from . import app
 from . import db
-from .models import User, UserData, Challenges, Facts
+from .models import User, UserData, Challenges, Facts, Badges
 import json, os, random, time, base64
 from sqlalchemy.orm.attributes import flag_modified
 #import seaborn as sns
@@ -44,6 +44,26 @@ def update_stats(user_data, challenge):
     user_data.stats[label][challenge.mode]+=1
     return user_data
 
+def update_badges(user_data, challenges):
+    badges=Badges.query.all()
+    for badge in badges:
+        if badge.id not in user_data.badges:
+            if badge.criteria=="droplets":
+                if user_data.droplets>int(badge.condition):
+                    user_data.badges.append(badge.id)
+            elif badge.criteria=="streak":
+                if user_data.streak>int(badge.condition):
+                    user_data.badges.append(badge.id)
+            elif badge.criteria=="friends":
+                if len(user_data.friends)>int(badge.condition):
+                    user_data.badges.append(badge.id)
+            elif badge.criteria=="challenge":
+                if challenges.mode==badge.condition:
+                    user_data.badges.append(badge.id)
+            else:
+                print("Unknown badge error!")
+    return user_data
+
 def commit_data(data):
     with app.app_context():
         db.session.add(data)
@@ -56,6 +76,8 @@ def data_loading():
         db.session.query(Challenges).delete()
         db.session.commit()
         db.session.query(Facts).delete()
+        db.session.commit()
+        db.session.query(Badges).delete()
         db.session.commit()
 
         f = open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/challenges.json")
@@ -82,6 +104,12 @@ def data_loading():
                     for key in s:
                         user_data.stats[key]=s[key]
                 commit_data(user_data)
+        f = open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/badges.json")
+        data = json.load(f)
+        for i in data:
+            x = Badges(badge=i["Badge"], criteria=i["Criteria"], condition=str(i["Condition"]))
+            commit_data(x)
+
     return
 
 def dict_helper(objlist):
@@ -154,7 +182,7 @@ def signup():
         db.session.commit()
 
         user = User.query.filter_by(name=name).first()
-        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=0, friends=[(User.query.filter_by(name=name).first()).id])
+        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=0, friends=[(User.query.filter_by(name=name).first()).id], badges=[])
         db.session.add(user_data)
         db.session.commit()
         response_object["success"] = True
@@ -218,11 +246,14 @@ def challenge_complete():
         response_object['userDroplets']=user_data.droplets
         response_object['streak']=user_data.streak
         response_object['success']= True
+        user_data=update_badges(user_data, challenges)
         user_data=update_stats(user_data, challenges)
         flag_modified(user_data, "stats")
+        flag_modified(user_data, "badges")
         db.session.commit()
         user_data=UserData.query.get(user_id)
-        print("Stats", user_data.stats)
+        #print("Stats", user_data.stats)
+        #print("Badges", user_data.stats)
         return response_object
     else:
         return {'status': 'fail'}
@@ -297,7 +328,12 @@ def challenges_all():
         data=request.get_json()
         user_id=data['userId']
         user_data=UserData.query.get(user_id)
-        challenges = Challenges.query.filter(Challenges.mode.in_(user_data.modes)).all()
+        print(user_data.modes)
+        if not(user_data.modes == []):
+            challenges = Challenges.query.filter(Challenges.mode.in_(user_data.modes)).all()
+        else:
+            challenges = Challenges.query.all()[1:]
+        #print(challenges)
         challenge_list=[]
         
         for c in challenges:
@@ -368,16 +404,19 @@ def friends_add():
         response_object['success']= True
         data=request.get_json()
         user_id=data['userId']
-        friend_name=data['FriendName']
+        friend_name=data['friendName']
         friend=User.query.filter_by(name=friend_name).first()
+        if friend is None:
+            response_object['success']=False 
+            return response_object
         user_data=UserData.query.get(user_id)
         friend_data=UserData.query.get(friend.id)
         if friend.id not in user_data.friends:
             user_data.friends.append(friend.id)
         challenge=Challenges.query.get(friend_data.challenge)
-        response_object["FriendId"]:friend.id
-        response_object["FriendName"]:friend.name
-        response_object["Challenge"]: "No challenge in progress" if challenge.task is None else challenge.task
+        response_object["FriendId"]=friend.id
+        response_object["FriendName"]=friend.name
+        response_object["Challenge"]= "No challenge in progress" if challenge.task is None else challenge.task
         db.session.commit()
         return response_object
 
@@ -426,10 +465,53 @@ def favourites_list():
                     "favourite": True
                 }
             )
-        response_object['success']= True
         response_object["challenges"] =challenge_list
         return response_object
         
+@app.route("/api/badges", methods=["POST", "GET"])
+@cross_origin()
+def badges():
+    response_object = {"status": "success"}
+    if request.method == 'POST':
+        response_object['success']= True
+        data=request.get_json()
+        user_id=data['userId']
+        user_data=UserData.query.get(user_id)
+        badges=Badges.query.all()
+        badges_list=[]
+        for b in badges:
+            badges_list.append(
+                {
+                    "BadgeId":b.id,
+                    "BadgeName":b.badge,
+                    "Possessed": True if b.id in user_data.badges else False
+                }
+            )
+        response_object["badges"] =badges_list
+        return response_object
+        
+        
+@app.route('/api/friend', methods=['POST', 'GET'])
+@cross_origin()
+def friend_profile():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        response_object['success']= True
+        data=request.get_json()
+        user_id=data['userId']
+        friend_id=data['friendId']
+        friend=User.query.get(friend_id)
+        friend_data=UserData.query.get(friend_id)
+        response_object['FriendId']=friend_id
+        response_object['FriendName']=friend.name
+        response_object['Droplets']=friend_data.droplets
+        response_object['Streaks']=friend_data.streak
+        badges = Badges.query.filter(Badges.id.in_(friend_data.badges)).all()
+        response_object['Badges']=[b.badge for b in badges]
+        return response_object
+
+
+
 
 
 

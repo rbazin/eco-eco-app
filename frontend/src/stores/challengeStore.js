@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 export const challengeStore = defineStore("challengeStore", {
   state: () => ({
     challenges: [],
+    allChallenges: [],
   }),
   getters: {
     // get challenge by id
