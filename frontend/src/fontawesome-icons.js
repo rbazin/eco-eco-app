@@ -9,10 +9,12 @@ import {
     faHand,
     faCirclePlus,
     faMedal,
+    faChevronRight,
+    faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
 
-library.add(faDroplet, faBoltLightning, faCircleUser, faArrowLeft, faUser, faHand, faCirclePlus, faMedal);
+library.add(faDroplet, faBoltLightning, faCircleUser, faArrowLeft, faUser, faHand, faCirclePlus, faMedal, faChevronRight, faChevronLeft);
 
 
 export default FontAwesomeIcon;
