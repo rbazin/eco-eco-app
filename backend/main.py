@@ -182,7 +182,7 @@ def signup():
         db.session.commit()
 
         user = User.query.filter_by(name=name).first()
-        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=0, friends=[(User.query.filter_by(name=name).first()).id], badges=[])
+        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=1, friends=[(User.query.filter_by(name="Leonie").first()).id], badges=[])
         db.session.add(user_data)
         db.session.commit()
         response_object["success"] = True
@@ -382,7 +382,7 @@ def friends_list():
         user_id=data['userId']
         user_data=UserData.query.get(user_id)
         friends_list=[]
-        for f in user_id.friends:
+        for f in user_data.friends:
             friend=User.query.get(f)
             friend_data=UserData.query.get(f)
             challenge=Challenges.query.get(friend_data.challenge)
@@ -390,10 +390,10 @@ def friends_list():
                 {
                     "FriendId":f,
                     "FriendName":friend.name,
-                    "Challenge": "No challenge in progress" if challenge.task is None else challenge.task
+                    "Challenge": "No challenge in progress" if challenge.task=="" else challenge.task
                 }
             )
-        response_object["friends"] = challenge_list
+        response_object["friends"] = friends_list
         return response_object
         
 @app.route("/api/friend/add", methods=["POST", "GET"])
@@ -404,7 +404,11 @@ def friends_add():
         response_object['success']= True
         data=request.get_json()
         user_id=data['userId']
+        user=User.query.get(user_id)
         friend_name=data['friendName']
+        if friend_name==user.name:
+            response_object['success']= False
+            return response_object
         friend=User.query.filter_by(name=friend_name).first()
         if friend is None:
             response_object['success']=False 
@@ -416,8 +420,10 @@ def friends_add():
         challenge=Challenges.query.get(friend_data.challenge)
         response_object["FriendId"]=friend.id
         response_object["FriendName"]=friend.name
-        response_object["Challenge"]= "No challenge in progress" if challenge.task is None else challenge.task
+        response_object["Challenge"]= "No challenge in progress" if challenge.task=="" else challenge.task
+        flag_modified(user_data,"friends")
         db.session.commit()
+        print("Friends", UserData.query.get(user_id).friends)
         return response_object
 
 @app.route("/api/favourite", methods=["POST", "GET"])
