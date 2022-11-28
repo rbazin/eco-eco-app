@@ -333,7 +333,7 @@ def challenges_all():
             challenges = Challenges.query.filter(Challenges.mode.in_(user_data.modes)).all()
         else:
             challenges = Challenges.query.all()[1:]
-        print(challenges)
+        #print(challenges)
         challenge_list=[]
         
         for c in challenges:
@@ -404,16 +404,19 @@ def friends_add():
         response_object['success']= True
         data=request.get_json()
         user_id=data['userId']
-        friend_name=data['FriendName']
+        friend_name=data['friendName']
         friend=User.query.filter_by(name=friend_name).first()
+        if friend is None:
+            response_object['success']=False 
+            return response_object
         user_data=UserData.query.get(user_id)
         friend_data=UserData.query.get(friend.id)
         if friend.id not in user_data.friends:
             user_data.friends.append(friend.id)
         challenge=Challenges.query.get(friend_data.challenge)
-        response_object["FriendId"]:friend.id
-        response_object["FriendName"]:friend.name
-        response_object["Challenge"]: "No challenge in progress" if challenge.task is None else challenge.task
+        response_object["FriendId"]=friend.id
+        response_object["FriendName"]=friend.name
+        response_object["Challenge"]= "No challenge in progress" if challenge.task is None else challenge.task
         db.session.commit()
         return response_object
 

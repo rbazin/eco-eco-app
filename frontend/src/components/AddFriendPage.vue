@@ -69,8 +69,9 @@ export default {
     },
     addFriend() {
       // send a request to the backend to add a friend
-      axios.post("http://localhost:5000/friend/add", {
-        username: this.username,
+      axios.post("http://localhost:5000/api/friend/add", {
+        userId: this.store.userId,
+        friendName: this.username,
       })
       .then((response) => {
         console.log(response);
