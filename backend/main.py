@@ -328,7 +328,12 @@ def challenges_all():
         data=request.get_json()
         user_id=data['userId']
         user_data=UserData.query.get(user_id)
-        challenges = Challenges.query.filter(Challenges.mode.in_(user_data.modes)).all()
+        print(user_data.modes)
+        if not(user_data.modes == []):
+            challenges = Challenges.query.filter(Challenges.mode.in_(user_data.modes)).all()
+        else:
+            challenges = Challenges.query.all()[1:]
+        #print(challenges)
         challenge_list=[]
         
         for c in challenges:
@@ -399,16 +404,19 @@ def friends_add():
         response_object['success']= True
         data=request.get_json()
         user_id=data['userId']
-        friend_name=data['FriendName']
+        friend_name=data['friendName']
         friend=User.query.filter_by(name=friend_name).first()
+        if friend is None:
+            response_object['success']=False 
+            return response_object
         user_data=UserData.query.get(user_id)
         friend_data=UserData.query.get(friend.id)
         if friend.id not in user_data.friends:
             user_data.friends.append(friend.id)
         challenge=Challenges.query.get(friend_data.challenge)
-        response_object["FriendId"]:friend.id
-        response_object["FriendName"]:friend.name
-        response_object["Challenge"]: "No challenge in progress" if challenge.task is None else challenge.task
+        response_object["FriendId"]=friend.id
+        response_object["FriendName"]=friend.name
+        response_object["Challenge"]= "No challenge in progress" if challenge.task is None else challenge.task
         db.session.commit()
         return response_object
 
@@ -483,6 +491,27 @@ def badges():
         return response_object
         
         
+@app.route('/api/friend', methods=['POST', 'GET'])
+@cross_origin()
+def friend_profile():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        response_object['success']= True
+        data=request.get_json()
+        user_id=data['userId']
+        friend_id=data['friendId']
+        friend=User.query.get(friend_id)
+        friend_data=UserData.query.get(friend_id)
+        response_object['FriendId']=friend_id
+        response_object['FriendName']=friend.name
+        response_object['Droplets']=friend_data.droplets
+        response_object['Streaks']=friend_data.streak
+        badges = Badges.query.filter(Badges.id.in_(friend_data.badges)).all()
+        response_object['Badges']=[b.badge for b in badges]
+        return response_object
+
+
+
 
 
 
