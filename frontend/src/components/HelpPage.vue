@@ -29,8 +29,7 @@
 </template>
 
 <script>
-import carousel from '../components/carousel.vue';
-// import slide from '../components/slide.vue';
+import carousel from './CarouselComponent.vue';
 
 export default {
     name: "HelpPage",
@@ -51,10 +50,11 @@ export default {
 <style scoped>
 .container  {
   background-image: url("../assets/set_1/login_background.png");
+  background-repeat: repeat-y;
   /* display: flex; */
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
   
 }
 

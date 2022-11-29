@@ -8,15 +8,10 @@
 
       <!-- Tutorial title -->
       <header>
-        <p align="center">Progress</p>
+        <p class="has-text-centered">Progress</p>
       </header> 
 
-      <!-- <div class="buttons">
-        <button @click="showWeeklyGrpah" class="button is-primary is-light">Weekly</button>
-        <button @click="showMonthlyGraph" class="button is-primary is-light">Monthly</button>
-      </div> -->
-      
-      <graphs align="center" class="graphs" v-slot="{curGraph}"> 
+      <graphs align="center" class="graphs" v-slot="{curGraph}">
           <slide v-for="(graph, index) in graphs" :key="index">
               <div v-show="curGraph === index + 1" class="the graph">
                   <img :src="require(`../assets/stats/${graph}.png`)" alt="" />
@@ -29,7 +24,7 @@
 </template>
 
 <script>
-import graphs from "../components/graphs.vue";
+import graphs from "./GraphComponent.vue";
 
 export default {
   name: "ChartsPage",
@@ -46,13 +41,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .container  {
   background-image: url("../assets/set_1/login_background.png");
+  background-repeat: repeat-y;
   /* display: flex; */
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .ChartsPage {
@@ -63,11 +59,6 @@ p {
   font-size: 3rem;
   /* padding: 0rem; */
   text-align: center;
-}
-
-.buttons {
-  justify-content: center;
-  padding-top: 2rem;
 }
 
 img {

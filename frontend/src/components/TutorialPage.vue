@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import carousel from '../components/carousel.vue';
+import carousel from './CarouselComponent.vue';
 // import slide from '../components/slide.vue';
 
 export default {
