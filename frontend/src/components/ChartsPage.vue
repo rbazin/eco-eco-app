@@ -1,23 +1,26 @@
 <template>
-  <div class="container">
+  <div id="charts-container" class="container">
     <div class="ChartsPage">
       <!-- Back button -->
       <div @click="goBack" class="px-5 py-5">
-        <font-awesome-icon class="is-size-2" icon="fa-solid fa-arrow-left" />
+        <font-awesome-icon class="is-size-2" icon="fa-solid fa-arrow-left"/>
       </div>
 
       <!-- Tutorial title -->
       <header>
-        <p class="has-text-centered">Progress</p>
-      </header> 
+        <p id="title" class="has-text-centered">Progress</p>
+      </header>
 
       <graphs align="center" class="graphs" v-slot="{curGraph}">
-          <slide v-for="(graph, index) in graphs" :key="index">
-              <div v-show="curGraph === index + 1" class="the graph">
-                  <img :src="require(`../assets/stats/${graph}.png`)" alt="" />
-              </div>
-          </slide>
+        <slide v-for="(graph, index) in graphs" :key="index">
+          <div v-show="curGraph === index + 1" class="the graph">
+            <img id="graph" :src="require(`../assets/stats/${graph}.png`)" alt=""/>
+          </div>
+        </slide>
       </graphs>
+
+      <!--  Menu Bar to navigate the app -->
+      <MenuBar/>
 
     </div>
   </div>
@@ -25,24 +28,28 @@
 
 <script>
 import graphs from "./GraphComponent.vue";
+import MenuBar from "./MenuBar.vue";
 
 export default {
   name: "ChartsPage",
-  components: {graphs},
+  components: {
+    graphs,
+    MenuBar,
+  },
   setup() {
-      const graphs = ["grah1", "graph2"];
-      return { graphs };
-    },
+    const graphs = ["grah1", "graph2"];
+    return {graphs};
+  },
   methods: {
-      goBack() {
-        this.$router.push("/home");
-      },
+    goBack() {
+      this.$router.push("/home");
+    },
   },
 }
 </script>
 
 <style scoped>
-.container  {
+#charts-container {
   background-image: url("../assets/set_1/login_background.png");
   background-repeat: repeat-y;
   /* display: flex; */
@@ -55,18 +62,18 @@ export default {
   max-height: 100px;
 }
 
-p {
+#title {
   font-size: 3rem;
   /* padding: 0rem; */
   text-align: center;
 }
 
-img {
+#graph {
   min-width: 50%;
   object-fit: contain;
   vertical-align: middle;
-  max-width:400px;
-  max-height:400px;
+  max-width: 400px;
+  max-height: 400px;
   width: auto;
   height: auto;
 }

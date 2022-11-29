@@ -3,39 +3,39 @@
     <div class="icons-container">
       <router-link to="/friends" class="px-1">
         <img
-          class="image is-48x60 content"
-          src="../assets/set_2/friends_white.png"
-          alt="Home icon"
+            class="image is-48x60 content"
+            src="../assets/set_2/friends_white.png"
+            alt="Home icon"
         />
       </router-link>
       <router-link to="/badges" class="px-1">
         <img
-          class="image is-48x60 content"
-          src="../assets/set_2/badge.png"
-          alt="Badge icon"
+            class="image is-48x60 content"
+            src="../assets/set_2/badge.png"
+            alt="Badge icon"
         />
       </router-link>
       <router-link to="/home" class="px-1">
         <img
-          class="image is-48x60 content"
-          src="../assets/set_2/home_white.png"
-          alt="Home icon"
+            class="image is-48x60 content"
+            src="../assets/set_2/home_white.png"
+            alt="Home icon"
         />
       </router-link>
-      <div @click="openModal" class="px-1">
+      <router-link to="/charts" class="px-1">
         <img
-          class="image is-48x60 content"
-          src="../assets/set_2/graph_white.png"
-          alt="Chart icon"
+            class="image is-48x60 content"
+            src="../assets/set_2/graph_white.png"
+            alt="Chart icon"
         />
-      </div>
-      <div @click="openModal" class="px-1">
+      </router-link>
+      <router-link to="/help" class="px-1">
         <img
-          class="image is-48x60 content"
-          src="../assets/set_2/help.png"
-          alt="Help icon"
+            class="image is-48x60 content"
+            src="../assets/set_2/help.png"
+            alt="Help icon"
         />
-      </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -44,11 +44,6 @@
 export default {
   name: "MenuBar",
   // make a method to emmit isActive when an icon is clicked
-  methods: {
-    openModal() {
-      this.$emit("toggleModal");
-    },
-  },
 };
 </script>
 
@@ -67,6 +62,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 .icons-container {
   display: flex;
   flex-direction: row;

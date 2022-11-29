@@ -13,6 +13,7 @@ import AllChallenges from "./components/AllChallengesPage.vue";
 import SelectChallenge from "./components/SelectChallenge.vue";
 import TutorialPage from "./components/TutorialPage.vue";
 import HelpPage from "./components/HelpPage.vue";
+import AddFriendPage from "@/components/AddFriendPage";
 
 // Possible routes for the application
 export const routes = [
@@ -22,6 +23,7 @@ export const routes = [
   { path: "/questionnaire_1", component: QuestionnairePage1 },
   { path: "/questionnaire_2", component: QuestionnairePage2 },
   { path: "/friends", component: FriendsPage },
+  { path: "/add-friend", component: AddFriendPage },
   { path: "/badges", component: BadgePage },
   { path: "/charts", component: ChartsPage },
   { path: "/profile", component: ProfilePage },

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div id="help-container" class="container">
     <div class="HelpPage">
       
       <!-- Back button --> 
@@ -9,7 +9,7 @@
 
       <!-- Tutorial title -->
       <header>
-        <p align="center">Help</p>
+        <p id="title-help" >Help</p>
       </header>
 
       <!-- carousel -->
@@ -18,22 +18,28 @@
               <!-- output the images -->
               <!-- show image only currentslide equals index -->
               <div v-show="currentSlide === index + 1" class="slide-content">
-                  <img :src="require(`../assets/helpImage/${slide}.png`)" alt="" />
+                  <img class="help-img" :src="require(`../assets/helpImage/${slide}.png`)" alt="" />
               </div>
           </slide>
       </carousel>
       
-      
+      <!--  Menu Bar to navigate the app -->
+    <MenuBar />
+
     </div>
   </div>
 </template>
 
 <script>
 import carousel from './CarouselComponent.vue';
+import MenuBar from './MenuBar.vue';
 
 export default {
     name: "HelpPage",
-    components: {carousel},
+    components: {
+      carousel,
+      MenuBar,
+    },
     setup() {
       const carouselSlides = ["h1", "h2",'h3','h4','h5','h6','h7','h8','h9'];
       return { carouselSlides };
@@ -48,7 +54,7 @@ export default {
 </script>
 
 <style scoped>
-.container  {
+#help-container {
   background-image: url("../assets/set_1/login_background.png");
   background-repeat: repeat-y;
   /* display: flex; */
@@ -58,7 +64,7 @@ export default {
   
 }
 
-p {
+#title-help {
   font-size: 3rem;
   /* padding: 0rem; */
   text-align: center;
@@ -87,7 +93,7 @@ p {
   
 }
 
-img {
+.help-img {
   min-width: 50%;
   object-fit: contain;
   vertical-align: middle;
