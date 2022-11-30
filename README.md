@@ -15,6 +15,18 @@ Then to see the app in your browser (press f12 to resize to a mobile screen size
 ```bash
 yarn serve
 ```
+If you encounter the following error after yarn serve
+```bash
+digital envelope routines::unsupported
+```
+Do 
+```bash
+$env:NODE_OPTIONS = "--openssl-legacy-provider"
+```
+Then do 
+```bash
+yarn serve
+```
 
 To install the depedencies for the backend :
 ```bash
