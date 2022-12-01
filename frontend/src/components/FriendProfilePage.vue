@@ -76,19 +76,10 @@ export default {
   data() {
     return {
       friendId: this.$route.params.id,
-      friendName: "Léonie",
-      friendDroplets: 15,
-      friendStreak: 5,
-      friendBadges: [
-        {
-          BadgeName: "First Tree",
-          Possessed: true,
-        },
-        {
-          BadgeName: "First Droplet",
-          Possessed: true,
-        }
-      ],
+      friendName: "",
+      friendDroplets: 0,
+      friendStreak: 0,
+      friendBadges: [],
     }
   },
   computed: {
