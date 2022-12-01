@@ -1,5 +1,10 @@
 <template>
-  <div class="login-page is-fullheight container">
+  <div class="register-page is-fullheight container">
+    <!-- Back button -->
+    <div id="go-back" @click="goBack" class="px-5 py-5 mb-5">
+      <font-awesome-icon class="is-size-2" icon="fa-solid fa-arrow-left" />
+    </div>
+
     <figure class="content has-text-centered mb-0">
       <img src="../assets/set_1/1.png" alt="Eco-Eco Logo" width="200" />
     </figure>
@@ -102,6 +107,9 @@ export default {
     };
   },
   methods: {
+    goBack() {
+      this.$router.push("/login");
+    },
     register() {
       console.log("Registering...");
       axios
@@ -130,8 +138,15 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .register-page {
   background-image: url("../assets/set_1/login_background.png");
+  min-height: 100vh;
+  background-size: cover;
+  background-repeat: repeat-y;
+}
+#go-back {
+  position: absolute;
+  left: 0;
 }
 </style>
