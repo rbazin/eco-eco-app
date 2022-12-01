@@ -5,17 +5,15 @@
       <font-awesome-icon class="is-size-2" icon="fa-solid fa-arrow-left"/>
     </div>
 
-    <h1 class="title is-1 has-text-centered">{{ friendName }}</h1>
+    <h1 id="main-title" class="title is-1 has-text-centered">{{ friendName }}</h1>
 
     <!-- Friend profile -->
-    <div class="is-size-2 is-centered columns py-6 is-mobile">
+    <div class="is-size-2 is-centered columns is-mobile">
+      <figure class="column image">
+        <img id="profile-pic" src="../assets/set_2/profile_pic_friend.png" alt="icon of user">
+      </figure>
       <div class="column">
-        <span class="icon"
-        ><font-awesome-icon icon="fa-solid fa-circle-user fa-10x"
-        /></span>
-      </div>
-      <div class="column">
-        <div class="columns is-mobile">
+        <div class="columns ">
           <div class="column">
         <span class="icon-text">
           <span class="icon"
@@ -38,6 +36,15 @@
       </div>
     </div>
 
+    <!-- Friend's Tree -->
+    <figure class="has-text-centered image">
+      <img id="tree-pic" :src="treePath" alt="tree of the user">
+    </figure>
+
+    <!-- Friend's Badges -->
+    <h1 id="badge-title" class="title is-1 px-5">Badges</h1>
+    <BadgeComponent v-for="(badge, index) in friendBadges" :badge="badge" :key="index" class="mt-5"/>
+
     <!--  Menu Bar to navigate the app -->
     <MenuBar/>
 
@@ -46,6 +53,7 @@
 
 <script>
 import MenuBar from "./MenuBar.vue";
+import BadgeComponent from "@/components/BadgeComponent.vue";
 
 import axios from "axios";
 import {userStore} from "@/stores/userStore";
@@ -54,6 +62,7 @@ export default {
   name: "FriendProfilePage",
   components: {
     MenuBar,
+    BadgeComponent,
   },
   setup() {
     const store = userStore();
@@ -68,13 +77,32 @@ export default {
     return {
       friendId: this.$route.params.id,
       friendName: "Léonie",
-      friendTreeState: 2,
       friendDroplets: 15,
       friendStreak: 5,
-      friendBadges: [],
+      friendBadges: [
+        {
+          BadgeName: "First Tree",
+          Possessed: true,
+        },
+        {
+          BadgeName: "First Droplet",
+          Possessed: true,
+        }
+      ],
+    }
+  },
+  computed: {
+    treePath() {
+      return require("../assets/set_2/tree_" + this.getTreeState() + ".png");
     }
   },
   methods: {
+    getTreeState() {
+      if (this.friendDroplets < 600) {
+        return Math.floor(this.friendDroplets / 100) + 1;
+      }
+      return 7;
+    },
     getFriend() {
       axios
           .post("http://localhost:5000/api/friend", {
@@ -84,7 +112,6 @@ export default {
           .then((response) => {
             if (response.data.success) {
               this.friendName = response.data.FriendName;
-              this.friendTreeState = response.data.TreeState;
               this.friendDroplets = response.data.Droplets;
               this.friendStreak = response.data.Streak;
               this.friendBadges = response.data.Badges;
@@ -102,12 +129,27 @@ export default {
 </script>
 
 <style scoped>
-.title {
+#main-title {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
   top: -50px;
   color: #066284;
+}
+
+#badge-title {
+  color: #066284;
+}
+
+#profile-pic {
+  width: 75%;
+  max-width: 250px;
+  height: auto;
+}
+
+#tree-pic {
+  max-width: 250px;
+  margin: auto;
 }
 
 .column {
@@ -116,6 +158,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 
 #container-friend-profile {
   min-height: 100vh;

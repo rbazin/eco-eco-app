@@ -31,11 +31,11 @@
     <div id="main-content" class="mb-3">
       <div class="columns">
         <figure @click="clickOnCloud" id="cloud" class="column has-text-centered">
-          <img :src="cloudPath">
+          <img :src="cloudPath" alt="cloud">
           <p id="cloud-text">{{ challengeText }}</p>
         </figure>
         <figure id="tree" class="column has-text-centered">
-          <img :src="treePath" />
+          <img :src="treePath" alt="tree of the user"/>
         </figure>
       </div>
     </div>
