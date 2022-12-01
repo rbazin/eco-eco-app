@@ -105,10 +105,16 @@ export default {
       }
     },
     treePath: function () {
-      return require("../assets/set_2/tree_" + this.treeState + ".png");
+      return require("../assets/set_2/tree_" + this.getTreeState() + ".png");
     },
   },
   methods: {
+    getTreeState() {
+      if (this.droplets < 600) {
+        return Math.floor(this.droplets / 100) + 1;
+      }
+      return 7;
+    },
     abortionEffect(newStreak) {
       this.streak = newStreak;
       this.activeChallenge = null;
@@ -136,15 +142,6 @@ export default {
         // route to the challenges page
         this.$router.push("/challenge");
       }
-    },
-    // get the user's data from store : should launch right from the beginning
-    async getUserData() {
-      const data = this.store.getUserData();
-      this.droplets = data.userDroplets;
-      this.streak = data.userStreak;
-      // this.profilePic = data.userProfilePic; // We should fetch the profile pic but for now it will be static
-      this.treeState = data.userTreeState;
-      this.activeChallenge = data.userActiveChallenge;
     },
   },
 };

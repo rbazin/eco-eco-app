@@ -53,10 +53,10 @@ export default {
   background-color: rgba(32, 196, 211, 0.45);
   max-width: 400px;
   width: 90%;
-  position: absolute;
-  bottom: 1%;
+  position: fixed;
   left: 50%;
   transform: translateX(-50%);
+  bottom: 1%;
   min-height: 100px;
   display: flex;
   align-items: center;
