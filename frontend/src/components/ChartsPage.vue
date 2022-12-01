@@ -58,6 +58,22 @@ export default {
     
   },
 
+  created() {
+    axios 
+      .post("http://localhost:5000/api/stats", {userId: this.store.userId,})
+      .then((response) => {
+        if (response.data.success) {
+            this.weeklyGraph=response.data.weekly;
+            this.monthlyGraph=response.data.monthly;
+            this.showWeekly = true; //display weekly as default graph on page load
+            this.showMonthly = false;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+
   mounted() {
     this.showWeeklyGraph();
     this.showMonthlyGraph();
@@ -68,37 +84,14 @@ export default {
       this.$router.push("/home");
     },
 
-    showWeeklyGraph() {
-      axios
-        .post("http://localhost:5000/api/stats", {userId: this.store.userId,})
-        .then((response) => {
-          console.log(response.data.weekly);
-          if (response.data.success) {
-              this.weeklyGraph=response.data.weekly;
-              this.showMonthly = false;
-              this.showWeekly = true;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
+    showMonthlyGraph() {
+      this.showMonthly = true;
+      this.showWeekly = false;
     },
 
-    showMonthlyGraph() {
-      axios
-        .post("http://localhost:5000/api/stats", {userId: this.store.userId,})
-        .then((response) => {
-          console.log(response);
-          if (response.data.success) {
-            this.monthlyGraph=response.data.monthly;
-            this.showMonthly = true;
-            this.showWeekly = false;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    showWeeklyGraph() {
+      this.showMonthly = false;
+      this.showWeekly = true;
     },
   },
 }
