@@ -1,32 +1,34 @@
 <template>
   <div id="charts-container" class="container">
-    <div class="ChartsPage">
       <!-- Back button -->
-      <div @click="goBack" class="px-5 py-5">
+      <div @click="goBack" class="px-5 py-5 mb-5">
         <font-awesome-icon class="is-size-2" icon="fa-solid fa-arrow-left"/>
       </div>
 
       <!-- Progress title -->
-      <header>
-        <p id="title" class="has-text-centered">Progress</p>
-      </header>
-  
+      <h1 id="title" class="title is-1 has-text-centered">Progress</h1>
+
       <!-- weekly and monthly buttons-->
-      <div class="weekly">
-        <button @click="showWeeklyGraph" class="button is-primary is-light">Weekly</button>
-      </div>
-      <div class="monthly" >
-        <button @click="showMonthlyGraph" class="button is-primary is-light">Monthly</button>
+      <div class="columns is-centered is-mobile">
+        <div class="column is-narrow">
+          <button @click="showWeeklyGraph" class="button is-primary is-light">Weekly</button>
+        </div>
+        <div class="column is-narrow" >
+          <button @click="showMonthlyGraph" class="button is-primary is-light">Monthly</button>
+        </div>
       </div>
 
       <!-- graphs -->
-      <img v-bind:src="'data:image/jpeg;base64,'+monthlyGraph" v-if="showMonthly"/>
-      <img v-bind:src="'data:image/jpeg;base64,'+weeklyGraph" v-if="showWeekly"/>
-    
+      <figure class="has-text-centered">
+        <img v-bind:src="'data:image/jpeg;base64,'+monthlyGraph" v-if="showMonthly"/>
+      </figure>
+      <figure class="has-text-centered">
+        <img v-bind:src="'data:image/jpeg;base64,'+weeklyGraph" v-if="showWeekly"/>
+      </figure>
+
       <!--  Menu Bar to navigate the app -->
       <MenuBar/>
 
-    </div>
   </div>
 </template>
 
@@ -101,36 +103,14 @@ export default {
 #charts-container {
   background-image: url("../assets/set_1/login_background.png");
   background-repeat: repeat-y;
-  /* display: flex; */
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
 }
 
-.ChartsPage {
-  max-height: 100px;
+.title {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -50px;
+  color: #066284;
 }
-
-#title {
-  font-size: 3rem;
-  /* padding: 0rem; */
-  text-align: center;
-}
-
-.weekly {
-  padding-top: 2rem;
-  padding-left: 6rem;
-  padding-bottom: 3rem;
-  display: inline-block;
-  --fa-border-color: rgb(10, 41, 99);
-}
-
-.monthly {
-  padding-top: 2rem;
-  padding-left: 1rem;
-  padding-bottom: 3rem;
-  display: inline-block;
-  --fa-border-color: rgb(10, 41, 99);
-}
-
 </style>
