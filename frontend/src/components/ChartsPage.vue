@@ -6,7 +6,7 @@
         <font-awesome-icon class="is-size-2" icon="fa-solid fa-arrow-left"/>
       </div>
 
-      <!-- Tutorial title -->
+      <!-- Progress title -->
       <header>
         <p id="title" class="has-text-centered">Progress</p>
       </header>
@@ -18,13 +18,11 @@
       <div class="monthly" >
         <button @click="showMonthlyGraph" class="button is-primary is-light">Monthly</button>
       </div>
-    
-    <!-- <slot :curGraph="curGraph"/> -->
 
-    <img v-bind:src="'data:image/jpeg;base64,'+monthlyGraph" v-if="showMonthly"/>
-    <img v-bind:src="'data:image/jpeg;base64,'+weeklyGraph" v-if="showWeekly"/>
+      <!-- graphs -->
+      <img v-bind:src="'data:image/jpeg;base64,'+monthlyGraph" v-if="showMonthly"/>
+      <img v-bind:src="'data:image/jpeg;base64,'+weeklyGraph" v-if="showWeekly"/>
     
-
       <!--  Menu Bar to navigate the app -->
       <MenuBar/>
 
@@ -80,8 +78,6 @@ export default {
               this.showMonthly = false;
               this.showWeekly = true;
           }
-
-  
         })
         .catch((error) => {
           console.log(error);
@@ -95,7 +91,6 @@ export default {
         .then((response) => {
           console.log(response);
           if (response.data.success) {
-            
             this.monthlyGraph=response.data.monthly;
             this.showMonthly = true;
             this.showWeekly = false;
@@ -131,15 +126,16 @@ export default {
 
 .weekly {
   padding-top: 2rem;
-  padding-left: 1rem;
-  padding-top: 0%;
+  padding-left: 6rem;
+  padding-bottom: 3rem;
   display: inline-block;
   --fa-border-color: rgb(10, 41, 99);
 }
 
 .monthly {
   padding-top: 2rem;
-  padding-left: 3rem;
+  padding-left: 1rem;
+  padding-bottom: 3rem;
   display: inline-block;
   --fa-border-color: rgb(10, 41, 99);
 }
