@@ -10,14 +10,20 @@
       <header>
         <p id="title" class="has-text-centered">Progress</p>
       </header>
+  
+      <!-- weekly and monthly buttons-->
+      <div class="weekly">
+        <button @click="showWeeklyGrpah" class="button is-primary is-light">Weekly</button>
+      </div>
+      <div class="monthly" >
+        <button @click="showMonthlyGraph" class="button is-primary is-light">Monthly</button>
+      </div>
+    
+    <!-- <slot :curGraph="curGraph"/> -->
 
-      <graphs align="center" class="graphs" v-slot="{curGraph}">
-        <slide v-for="(graph, index) in graphs" :key="index">
-          <div v-show="curGraph === index + 1" class="the graph">
-            <img id="graph" :src="require(`../assets/stats/${graph}.png`)" alt=""/>
-          </div>
-        </slide>
-      </graphs>
+    <img src='weeklyGraph' v-if='showWeekly' />
+    <img src='monthlyGraph' v-if="showMonthly" />
+    
 
       <!--  Menu Bar to navigate the app -->
       <MenuBar/>
@@ -27,22 +33,74 @@
 </template>
 
 <script>
-import graphs from "./GraphComponent.vue";
 import MenuBar from "./MenuBar.vue";
+import axios from "axios";
+import { userStore } from "@/stores/userStore";
 
 export default {
   name: "ChartsPage",
   components: {
-    graphs,
     MenuBar,
   },
+  
   setup() {
-    const graphs = ["grah1", "graph2"];
-    return {graphs};
+    const store = userStore();
+    return {
+      store,
+    };
   },
+
+  data() {
+    return {
+    showWeekly: false,
+    showMonthly: false,
+    }
+    
+  },
+
+  mounted() {
+    this.showWeeklyGraph();
+    this.showMonthlyGraph();
+  },
+
   methods: {
     goBack() {
       this.$router.push("/home");
+    },
+
+    showWeeklyGraph() {
+      axios
+        .post("http://localhost:5000/api/stats", {userId: this.store.userId,})
+        .then((response) => {
+          console.log(response);
+          if (response.data.success) {
+              console.log(response.weekly);
+
+            
+          }
+
+  
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+    },
+
+    showMonthlyGraph() {
+      axios
+        .post("http://localhost:5000/api/stats", {userId: this.store.userId,})
+        .then((response) => {
+          console.log(response);
+          if (response.data.success) {
+            
+            console.log(response.data);
+            this.showMonthly = !this.showMonthly;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 }
@@ -68,14 +126,19 @@ export default {
   text-align: center;
 }
 
-#graph {
-  min-width: 50%;
-  object-fit: contain;
-  vertical-align: middle;
-  max-width: 400px;
-  max-height: 400px;
-  width: auto;
-  height: auto;
+.weekly {
+  padding-top: 2rem;
+  padding-left: 1rem;
+  padding-top: 0%;
+  display: inline-block;
+  --fa-border-color: rgb(10, 41, 99);
+}
+
+.monthly {
+  padding-top: 2rem;
+  padding-left: 3rem;
+  display: inline-block;
+  --fa-border-color: rgb(10, 41, 99);
 }
 
 </style>
