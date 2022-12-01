@@ -14,6 +14,7 @@ import SelectChallenge from "./components/SelectChallenge.vue";
 import TutorialPage from "./components/TutorialPage.vue";
 import HelpPage from "./components/HelpPage.vue";
 import AddFriendPage from "@/components/AddFriendPage";
+import FriendProfilePage from "@/components/FriendProfilePage.vue";
 
 // Possible routes for the application
 export const routes = [
@@ -35,6 +36,11 @@ export const routes = [
     path: "/select-challenge/:id",
     name: "SelectChallenge",
     component: SelectChallenge,
+  },
+  {
+    path: "/friend-profile/:id",
+    name: "FriendProfilePage",
+    component: FriendProfilePage,
   },
   { path: "/:pathMatch(.*)*", redirect: "/" }, // if the page is not found, redirect to the login page (improvement : send to 404 or home if logged in)
 ];

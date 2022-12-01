@@ -2,7 +2,7 @@
   <div class="container main-container-friend-page">
     <!-- Back button -->
     <div @click="goBack" class="px-5 py-5 mb-5">
-      <font-awesome-icon class="is-size-2" icon="fa-solid fa-arrow-left" />
+      <font-awesome-icon class="is-size-2" icon="fa-solid fa-arrow-left"/>
     </div>
 
     <!-- Content -->
@@ -11,7 +11,8 @@
       <h1 class="title is-1 has-text-centered">Friends</h1>
 
       <!-- Friends -->
-      <FriendComponent class="mb-5" v-for="(friend, index) in friends" :key="index" :friend="friend" />
+      <FriendComponent @click="goToFriendProfile(friend)" class="mb-5" v-for="(friend, index) in friends" :key="index"
+                       :friend="friend"/>
 
       <!--  Menu Bar to navigate the app -->
       <MenuBar @toggle-modal="changeModal"/>
@@ -19,11 +20,11 @@
       <!-- Add friend button -->
       <div id="add-button" @click="goToAddFriend" class="has-text-centered px-4 py-5">
           <span class="icon is-size-1"
-            ><font-awesome-icon
-                id="profile"
-                color="white"
-                icon="fa-solid fa-circle-plus fa-5x"
-            /></span>
+          ><font-awesome-icon
+              id="profile"
+              color="white"
+              icon="fa-solid fa-circle-plus fa-5x"
+          /></span>
       </div>
 
     </div>
@@ -32,17 +33,17 @@
   </div>
 </template>
 <script>
-import FriendComponent  from "./FriendComponent.vue"
+import FriendComponent from "./FriendComponent.vue"
 import MenuBar from "./MenuBar.vue"
 import NotImplemented from "./NotImplemented.vue";
 
-import { userStore } from "@/stores/userStore";
+import {userStore} from "@/stores/userStore";
 
 import axios from "axios";
 
 export default {
   name: "App",
-  components : {
+  components: {
     FriendComponent,
     MenuBar,
     NotImplemented,
@@ -59,12 +60,19 @@ export default {
   data() {
     return {
       friends: [],
-      isActive : false,
+      isActive: false,
     }
   },
   methods: {
+    goToFriendProfile(friend) {
+      this.$router.push({
+        name: "FriendProfilePage",
+        path: "/friend-profile",
+        params: {id: friend.FriendId}
+      });
+    },
     goToAddFriend() {
-     this.$router.push("/add-friend");
+      this.$router.push("/add-friend");
     },
     changeModal() {
       // change the value of isActive
@@ -74,20 +82,20 @@ export default {
       this.$router.push("/home");
     },
     getFriends() {
-        axios
-            .post("http://localhost:5000/api/friend/list", {
-                userId: this.store.userId,
-            })
-            .then((response) => {
-              console.log(response);
-              if (response.data.success) {
-                this.friends = response.data.friends; // assuming the list is called "friends"
-                this.store.userFriendList = response.data.friends;
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+      axios
+          .post("http://localhost:5000/api/friend/list", {
+            userId: this.store.userId,
+          })
+          .then((response) => {
+            console.log(response);
+            if (response.data.success) {
+              this.friends = response.data.friends; // assuming the list is called "friends"
+              this.store.userFriendList = response.data.friends;
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     },
   }
 };
@@ -100,11 +108,13 @@ export default {
   top: -50px;
   color: #066284;
 }
+
 .main-container-friend-page {
   min-height: 100vh;
   background-image: url("../assets/set_1/login_background.png");
   background-repeat: repeat-y;
 }
+
 #add-button {
   display: flex;
   align-items: center;
