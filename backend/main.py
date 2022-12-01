@@ -27,7 +27,7 @@ def load_user(user_id):
 ##Methods
 def draw_weekly(data):
     modes=["Walking", "Buses", "Car", "Subway", "Bike", "Trains"]
-    week=[(datetime.date.today()-datetime.timedelta(days=x)).strftime("%d-%m-%Y") for x in range(7)]
+    week=[(datetime.date.today()-datetime.timedelta(days=x)).strftime("%d-%m-%Y") for x in range(7)][::-1]
     df=pd.DataFrame(columns=modes, index=[datetime.datetime.strptime(day, '%d-%m-%Y').strftime('%a') for day in week])
     df = df.fillna(0)
     for day in week:
@@ -37,7 +37,8 @@ def draw_weekly(data):
                 df.at[d, mode]=data[day][mode]
     sns.set_palette("Blues")
     df.plot(kind='bar', stacked=True)
-    plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True))
+    plt.ylim(bottom=0)
+    plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True, nbins=1))
     plt.savefig(str(os.path.dirname(os.path.abspath(__file__))) + "/data/temp/weekly.png")
     return 
 
@@ -56,7 +57,8 @@ def draw_monthly(data):
 
     sns.set_palette("Blues")
     df.plot(kind='line')
-    plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True))
+    plt.ylim(bottom=0)
+    plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True, nbins=1))
     plt.savefig(str(os.path.dirname(os.path.abspath(__file__))) + "/data/temp/monthly.png")   
     return
 
@@ -133,7 +135,7 @@ def data_loading():
                 new_user = User(name=i["name"], password=generate_password_hash(i["password"], method="sha256"))
                 commit_data(new_user)
                 user = User.query.filter_by(name=i["name"]).first()
-                user_data = UserData(id=user.id, droplets=i["droplets"], streak=i["streak"], challenge=i["challenge"], badges=i["badges"], modes=["Walking", "Buses", "Car", "Subway", "Bike", "Trains"], stats=i["stats"])
+                user_data = UserData(id=user.id, droplets=i["droplets"], streak=i["streak"], challenge=i["challenge"], badges=i["badges"], modes=["Walking", "Buses", "Car", "Subway", "Bike", "Trains"])
                 user_data.stats={}
                 for s in i["stats"]:
                     for key in s:
