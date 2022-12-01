@@ -13,7 +13,7 @@
   
       <!-- weekly and monthly buttons-->
       <div class="weekly">
-        <button @click="showWeeklyGrpah" class="button is-primary is-light">Weekly</button>
+        <button @click="showWeeklyGraph" class="button is-primary is-light">Weekly</button>
       </div>
       <div class="monthly" >
         <button @click="showMonthlyGraph" class="button is-primary is-light">Monthly</button>
@@ -21,8 +21,8 @@
     
     <!-- <slot :curGraph="curGraph"/> -->
 
-    <img src='weeklyGraph' v-if='showWeekly' />
-    <img src='monthlyGraph' v-if="showMonthly" />
+    <img v-bind:src="'data:image/jpeg;base64,'+monthlyGraph" v-if="showMonthly"/>
+    <img v-bind:src="'data:image/jpeg;base64,'+weeklyGraph" v-if="showWeekly"/>
     
 
       <!--  Menu Bar to navigate the app -->
@@ -52,8 +52,10 @@ export default {
 
   data() {
     return {
-    showWeekly: false,
+    showWeekly: true,
     showMonthly: false,
+    weeklyGraph:"",
+    monthlyGraph:"",
     }
     
   },
@@ -72,11 +74,11 @@ export default {
       axios
         .post("http://localhost:5000/api/stats", {userId: this.store.userId,})
         .then((response) => {
-          console.log(response);
+          console.log(response.data.weekly);
           if (response.data.success) {
-              console.log(response.weekly);
-
-            
+              this.weeklyGraph=response.data.weekly;
+              this.showMonthly = false;
+              this.showWeekly = true;
           }
 
   
@@ -94,8 +96,9 @@ export default {
           console.log(response);
           if (response.data.success) {
             
-            console.log(response.data);
-            this.showMonthly = !this.showMonthly;
+            this.monthlyGraph=response.data.monthly;
+            this.showMonthly = true;
+            this.showWeekly = false;
           }
         })
         .catch((error) => {
