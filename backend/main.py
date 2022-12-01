@@ -319,9 +319,47 @@ def challenges_basic():
     if request.method == 'POST':
         data=request.get_json()
         user_id=data['userId']
-        user_data=UserData.query.get(user_id) 
-        c=random.choice(list(range(2, 10)))
-        challenge_ids = [ c+x for x in range(3)] #add user personalization
+        user_data=UserData.query.get(user_id)
+        challenges= Challenges.query.filter(Challenges.mode.in_(user_data.modes)).all()
+        print(challenges)
+        challenge_ids=[]
+        try:
+            if len(challenges)>=3:
+                final_choice=challenges
+                if user_data.places["daily"]!=[]:
+                    challenges= Challenges.query.filter(Challenges.place.in_(user_data.places["daily"]), Challenges.mode.in_(user_data.modes)).all()
+                    if len(challenges)>=3:
+                        challenges=challenges[:2]
+                    for c in challenges:
+                        challenge_ids.append(c)
+                if len(challenge_ids)<3 and user_data.places["weekly"]!=[]:
+                    challenges= Challenges.query.filter(Challenges.place.in_(user_data.places["weekly"]), Challenges.mode.in_(user_data.modes)).all()
+                    if len(challenges)>=3-len(challenge_ids):
+                        challenges=challenges[:3-len(challenge_ids)]
+                    for c in challenges:
+                        challenge_ids.append(c)
+                if len(challenge_ids)<3 and user_data.places["monthly"]!=[]:
+                    challenges= Challenges.query.filter(Challenges.place.in_(user_data.places["monthly"]), Challenges.mode.in_(user_data.modes)).all()
+                    if len(challenges)>=3-len(challenge_ids):
+                        challenges=challenges[:3-len(challenge_ids)]
+                    for c in challenges:
+                        challenge_ids.append(c)
+                if len(challenge_ids)<3:
+                    for i in range(3-len(challenge_ids)):
+                        challenge_ids.append(final_choice[i].id)
+            else:
+
+                add=3-len(challenges)
+                for c in challenges:
+                    challenge_ids.append(c.id)
+                while len(challenge_ids)<3:
+                    c=random.choice(list(range(2, 12)))
+                    if c not in challenge_ids:
+                        challenge_ids.append(c)
+        except: 
+            c=random.choice(list(range(2, 10)))
+            challenge_ids = [ c+x for x in range(3)] #add user personalization
+        
         challenge_list = []
         for i in range(len(challenge_ids)):
             challenge = Challenges.query.get(challenge_ids[i])
