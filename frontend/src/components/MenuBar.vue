@@ -50,7 +50,7 @@ export default {
 <style scoped>
 .menu-bar {
   border-radius: 35px;
-  background-color: rgba(32, 196, 211, 0.45);
+  background-color: #90E0EF;
   max-width: 400px;
   width: 90%;
   position: fixed;

@@ -6,6 +6,7 @@
       class="modal-content has-background-white has-text-centered px-5 py-5"
     >
       <div id="button-container has-text-centered">
+        <h1 class="title is-2"> {{ challenge.title }}</h1>
         <button @click="markComplete" class="button is-primary is-size-4 mb-5">
           Mark complete
         </button>
@@ -31,7 +32,18 @@ export default {
       challenge_store,
     };
   },
+  mounted() {
+    this.getActiveChallenge();
+  },
+  data() {
+    return {
+      challenge: {},
+    };
+  },
   methods: {
+    getActiveChallenge() {
+      this.challenge = this.store.userActiveChallenge;
+    },
     closeModal() {
       this.$emit("toggleModal");
     },

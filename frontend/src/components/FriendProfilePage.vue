@@ -8,21 +8,21 @@
     <h1 id="main-title" class="title is-1 has-text-centered">{{ friendName }}</h1>
 
     <!-- Friend profile -->
-    <div class="is-size-2 is-centered columns is-mobile">
-      <figure class="column image">
+
+    <div class="fig-stats-container is-size-2 ">
+      <figure class="image">
         <img id="profile-pic" src="../assets/set_2/profile_pic_friend.png" alt="icon of user">
       </figure>
-      <div class="column">
-        <div class="columns ">
-          <div class="column">
+      <div class="stats-container">
+        <div class="stat">
         <span class="icon-text">
           <span class="icon"
           ><font-awesome-icon color="rgb(93, 173, 236)" icon="fa-solid fa-droplet"
           /></span>
           <span class="is-size-4">{{ friendDroplets }}</span>
         </span>
-          </div>
-          <div class="column">
+        </div>
+        <div class="stat">
         <span class="icon-text">
           <span class="icon"
           ><font-awesome-icon
@@ -31,22 +31,21 @@
           /></span>
           <span class="is-size-4">{{ friendStreak }}</span>
         </span>
-          </div>
         </div>
       </div>
     </div>
 
-    <!-- Friend's Tree -->
-    <figure class="has-text-centered image">
-      <img id="tree-pic" :src="treePath" alt="tree of the user">
-    </figure>
+  <!-- Friend's Tree -->
+  <figure class="has-text-centered image">
+    <img id="tree-pic" :src="treePath" alt="tree of the user">
+  </figure>
 
-    <!-- Friend's Badges -->
-    <h1 id="badge-title" class="title is-1 px-5">Badges</h1>
-    <BadgeComponent v-for="(badge, index) in friendBadges" :badge="badge" :key="index" class="mt-5"/>
+  <!-- Friend's Badges -->
+  <h1 id="badge-title" class="title is-1 px-5">Badges</h1>
+  <BadgeComponent v-for="(badge, index) in friendBadges" :badge="badge" :key="index" class="mt-5"/>
 
-    <!--  Menu Bar to navigate the app -->
-    <MenuBar/>
+  <!--  Menu Bar to navigate the app -->
+  <MenuBar/>
 
   </div>
 </template>
@@ -120,6 +119,10 @@ export default {
 </script>
 
 <style scoped>
+.main-content {
+  max-width: 100%;
+}
+
 #main-title {
   position: relative;
   left: 50%;
@@ -143,12 +146,13 @@ export default {
   margin: auto;
 }
 
-.column {
+.fig-stats-container {
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
+
 
 
 #container-friend-profile {
