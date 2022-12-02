@@ -21,8 +21,8 @@ export default {
 
     // next slide
     const nextSlide = () => {
-      if (currentSlide.value === 9) {
-        currentSlide.value = 9;
+      if (currentSlide.value === 7) {
+        currentSlide.value = 7;
         return;
       }
       currentSlide.value += 1
