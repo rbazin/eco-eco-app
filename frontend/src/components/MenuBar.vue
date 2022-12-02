@@ -4,35 +4,35 @@
       <router-link to="/friends" class="px-1">
         <img
             class="image is-48x60 content"
-            :src="require('@/assets/set_2/friends_white.png')"
+            :src="require('../assets/set_2/friends_white.png')"
             alt="Home icon"
         />
       </router-link>
       <router-link to="/badges" class="px-1">
         <img
             class="image is-48x60 content"
-            :src="require('@/assets/set_2/badge.png')"
+            :src="require('../assets/set_2/badge.png')"
             alt="Badge icon"
         />
       </router-link>
       <router-link to="/home" class="px-1">
         <img
             class="image is-48x60 content"
-            :src="require('@/assets/set_2/home_white.png')"
+            :src="require('../assets/set_2/home_white.png')"
             alt="Home icon"
         />
       </router-link>
       <router-link to="/charts" class="px-1">
         <img
             class="image is-48x60 content"
-            :src="require('@/assets/set_2/graph_white.png')"
+            :src="require('../assets/set_2/graph_white.png')"
             alt="Chart icon"
         />
       </router-link>
       <router-link to="/help" class="px-1">
         <img
             class="image is-48x60 content"
-            :src="require('@/assets/set_2/help.png')"
+            :src="require('../assets/set_2/help.png')"
             alt="Help icon"
         />
       </router-link>
