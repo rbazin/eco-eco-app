@@ -10,12 +10,6 @@
       <div class="column">
         <p class="is-size-4 username">{{ friend.FriendName }}</p>
       </div>
-      <span class="column icon is-size-3"
-      ><font-awesome-icon
-          id="hand"
-          color="#FFDB65"
-          icon="fa-solid fa-hand fa-5x"
-      /></span>
     </div>
   </div>
 </template>
