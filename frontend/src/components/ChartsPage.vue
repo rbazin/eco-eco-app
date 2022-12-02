@@ -9,11 +9,11 @@
       <h1 id="title" class="title is-1 has-text-centered">Progress</h1>
 
       <!-- weekly and monthly buttons-->
-      <div class="columns is-centered is-mobile">
-        <div class="column is-narrow">
+      <div class="button-container is-centered is-mobile">
+        <div class="butt">
           <button @click="showWeeklyGraph" class="button is-primary is-light">Weekly</button>
         </div>
-        <div class="column is-narrow" >
+        <div class="butt" >
           <button @click="showMonthlyGraph" class="button is-primary is-light">Monthly</button>
         </div>
       </div>
@@ -112,5 +112,14 @@ export default {
   transform: translateX(-50%);
   top: -50px;
   color: #066284;
+}
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.butt {
+  margin: 10px;
 }
 </style>
