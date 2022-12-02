@@ -11,7 +11,7 @@
 
     <div class="fig-stats-container is-size-2 ">
       <figure class="image">
-        <img id="profile-pic" src="@/assets/set_2/profile_pic_friend.png" alt="icon of user">
+        <img id="profile-pic" :src="require('@/assets/set_2/profile_pic_friend.png')" alt="icon of user">
       </figure>
       <div class="stats-container">
         <div class="stat">
