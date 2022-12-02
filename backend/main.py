@@ -5,14 +5,17 @@ from flask_cors import cross_origin
 from . import app
 from . import db
 from .models import User, UserData, Challenges, Facts, Badges
-import json, os, random, time, base64
+import json, os, random, time, base64, datetime
 from sqlalchemy.orm.attributes import flag_modified
-#import seaborn as sns
-
+import seaborn as sns
+import pandas as pd
+from  matplotlib.ticker import FuncFormatter, MaxNLocator
+import matplotlib.pyplot as plt
 
 login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.init_app(app)
+
 
 
 @login_manager.user_loader
@@ -22,16 +25,50 @@ def load_user(user_id):
 
 
 ##Methods
-def draw_weekly():
+def draw_weekly(data):
+    modes=["Walking", "Buses", "Car", "Subway", "Bike", "Trains"]
+    week=[(datetime.date.today()-datetime.timedelta(days=x)).strftime("%d-%m-%Y") for x in range(7)][::-1]
+    df=pd.DataFrame(columns=modes, index=[datetime.datetime.strptime(day, '%d-%m-%Y').strftime('%a') for day in week])
+    df = df.fillna(0)
+    for day in week:
+        if day in data:
+            for mode in data[day]:
+                d=datetime.datetime.strptime(day, '%d-%m-%Y').strftime('%a')
+                df.at[d, mode]=data[day][mode]
+    sns.set_palette("Blues")
+    df.plot(kind='bar', stacked=True)
+    plt.ylim(bottom=0)
+    plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True, nbins=1))
+    plt.savefig(str(os.path.dirname(os.path.abspath(__file__))) + "/data/temp/weekly.png")
+    return 
+
+
+
+def draw_monthly(data):
+    modes=["Walking", "Buses", "Car", "Subway", "Bike", "Trains"]
+    month=[(datetime.date.today()-datetime.timedelta(days=x)).strftime("%d-%m-%Y") for x in range(31)][::-1]
+    df=pd.DataFrame(columns=modes, index=[datetime.datetime.strptime(day, '%d-%m-%Y').strftime('%b %d') for day in month])
+    df = df.fillna(0)
+    for day in month:
+        if day in data:
+            for mode in data[day]:
+                d=datetime.datetime.strptime(day, '%d-%m-%Y').strftime('%b %d')
+                df.at[d, mode]=data[day][mode]
+
+    sns.set_palette("Blues")
+    df.plot(kind='line')
+    plt.ylim(bottom=0)
+    plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True, nbins=1))
+    plt.savefig(str(os.path.dirname(os.path.abspath(__file__))) + "/data/temp/monthly.png")   
     return
-    
-def draw_monthly():
-    return
+
+#data={'29-11-2022': {'Walking': 1, 'Buses': 0, 'Car': 1, 'Subway': 0, 'Bike': 0, 'Trains': 1}, '28-11-2022': {'Walking': 0, 'Buses': 1, 'Car': 0, 'Subway': 2, 'Bike': 0, 'Trains': 0}, '21-11-2022': {'Walking': 1, 'Buses': 0, 'Car': 0, 'Subway': 1, 'Bike': 1, 'Trains': 1}, '20-11-2022': {'Walking': 0, 'Buses': 0, 'Car': 0, 'Subway': 0, 'Bike': 0, 'Trains': 0}}
+#draw_monthly(data)
 
 def update_stats(user_data, challenge):
     label=time.strftime("%d-%m-%Y")
-    if user_data.stats==None:
-        user_data.stats={}
+    #if user_data.stats==None:
+    #    user_data.stats={}
     if label not in user_data.stats:
         user_data.stats[label]={
             "Walking":0,
@@ -104,6 +141,7 @@ def data_loading():
                     for key in s:
                         user_data.stats[key]=s[key]
                 commit_data(user_data)
+                #print(UserData.query.get(user.id).stats)
         f = open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/badges.json")
         data = json.load(f)
         for i in data:
@@ -182,7 +220,7 @@ def signup():
         db.session.commit()
 
         user = User.query.filter_by(name=name).first()
-        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=1, friends=[(User.query.filter_by(name="Leonie").first()).id], badges=[])
+        user_data = UserData(id=user.id, droplets=0, streak=0, challenge=1, friends=[(User.query.filter_by(name="Leonie").first()).id], badges=[], stats={})
         db.session.add(user_data)
         db.session.commit()
         response_object["success"] = True
@@ -281,9 +319,47 @@ def challenges_basic():
     if request.method == 'POST':
         data=request.get_json()
         user_id=data['userId']
-        user_data=UserData.query.get(user_id) 
-        c=random.choice(list(range(2, 10)))
-        challenge_ids = [ c+x for x in range(3)] #add user personalization
+        user_data=UserData.query.get(user_id)
+        challenges= Challenges.query.filter(Challenges.mode.in_(user_data.modes)).all()
+        print(challenges)
+        challenge_ids=[]
+        try:
+            if len(challenges)>=3:
+                final_choice=challenges
+                if user_data.places["daily"]!=[]:
+                    challenges= Challenges.query.filter(Challenges.place.in_(user_data.places["daily"]), Challenges.mode.in_(user_data.modes)).all()
+                    if len(challenges)>=3:
+                        challenges=challenges[:2]
+                    for c in challenges:
+                        challenge_ids.append(c)
+                if len(challenge_ids)<3 and user_data.places["weekly"]!=[]:
+                    challenges= Challenges.query.filter(Challenges.place.in_(user_data.places["weekly"]), Challenges.mode.in_(user_data.modes)).all()
+                    if len(challenges)>=3-len(challenge_ids):
+                        challenges=challenges[:3-len(challenge_ids)]
+                    for c in challenges:
+                        challenge_ids.append(c)
+                if len(challenge_ids)<3 and user_data.places["monthly"]!=[]:
+                    challenges= Challenges.query.filter(Challenges.place.in_(user_data.places["monthly"]), Challenges.mode.in_(user_data.modes)).all()
+                    if len(challenges)>=3-len(challenge_ids):
+                        challenges=challenges[:3-len(challenge_ids)]
+                    for c in challenges:
+                        challenge_ids.append(c)
+                if len(challenge_ids)<3:
+                    for i in range(3-len(challenge_ids)):
+                        challenge_ids.append(final_choice[i].id)
+            else:
+
+                add=3-len(challenges)
+                for c in challenges:
+                    challenge_ids.append(c.id)
+                while len(challenge_ids)<3:
+                    c=random.choice(list(range(2, 12)))
+                    if c not in challenge_ids:
+                        challenge_ids.append(c)
+        except: 
+            c=random.choice(list(range(2, 10)))
+            challenge_ids = [ c+x for x in range(3)] #add user personalization
+        
         challenge_list = []
         for i in range(len(challenge_ids)):
             challenge = Challenges.query.get(challenge_ids[i])
@@ -363,10 +439,12 @@ def stats():
         response_object['success']= True
         data=request.get_json()
         user_id=data['userId']
-        user_data=UserData.query.get(user_id) 
-        with open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/graph1.png", "rb") as img:
+        user_data=UserData.query.get(user_id)
+        draw_weekly(user_data.stats)
+        draw_monthly(user_data.stats)
+        with open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/temp/weekly.png", "rb") as img:
             weekly = base64.b64encode(img.read()).decode('utf-8')
-        with open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/graph2.png", "rb") as img:
+        with open(str(os.path.dirname(os.path.abspath(__file__))) + "/data/temp/monthly.png", "rb") as img:
             monthly = base64.b64encode(img.read()).decode('utf-8')
         response_object['weekly']=weekly
         response_object['monthly']=monthly

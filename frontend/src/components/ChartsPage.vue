@@ -1,48 +1,99 @@
 <template>
   <div id="charts-container" class="container">
-    <div class="ChartsPage">
       <!-- Back button -->
-      <div @click="goBack" class="px-5 py-5">
+      <div @click="goBack" class="px-5 py-5 mb-5">
         <font-awesome-icon class="is-size-2" icon="fa-solid fa-arrow-left"/>
       </div>
 
-      <!-- Tutorial title -->
-      <header>
-        <p id="title" class="has-text-centered">Progress</p>
-      </header>
+      <!-- Progress title -->
+      <h1 id="title" class="title is-1 has-text-centered">Progress</h1>
 
-      <graphs align="center" class="graphs" v-slot="{curGraph}">
-        <slide v-for="(graph, index) in graphs" :key="index">
-          <div v-show="curGraph === index + 1" class="the graph">
-            <img id="graph" :src="require(`../assets/stats/${graph}.png`)" alt=""/>
-          </div>
-        </slide>
-      </graphs>
+      <!-- weekly and monthly buttons-->
+      <div class="columns is-centered is-mobile">
+        <div class="column is-narrow">
+          <button @click="showWeeklyGraph" class="button is-primary is-light">Weekly</button>
+        </div>
+        <div class="column is-narrow" >
+          <button @click="showMonthlyGraph" class="button is-primary is-light">Monthly</button>
+        </div>
+      </div>
+
+      <!-- graphs -->
+      <figure class="has-text-centered">
+        <img v-bind:src="'data:image/jpeg;base64,'+monthlyGraph" v-if="showMonthly"/>
+      </figure>
+      <figure class="has-text-centered">
+        <img v-bind:src="'data:image/jpeg;base64,'+weeklyGraph" v-if="showWeekly"/>
+      </figure>
 
       <!--  Menu Bar to navigate the app -->
       <MenuBar/>
 
-    </div>
   </div>
 </template>
 
 <script>
-import graphs from "./GraphComponent.vue";
 import MenuBar from "./MenuBar.vue";
+import axios from "axios";
+import { userStore } from "@/stores/userStore";
 
 export default {
   name: "ChartsPage",
   components: {
-    graphs,
     MenuBar,
   },
+  
   setup() {
-    const graphs = ["grah1", "graph2"];
-    return {graphs};
+    const store = userStore();
+    return {
+      store,
+    };
   },
+
+  data() {
+    return {
+    showWeekly: true,
+    showMonthly: false,
+    weeklyGraph:"",
+    monthlyGraph:"",
+    }
+    
+  },
+
+  created() {
+    axios 
+      .post("http://localhost:5000/api/stats", {userId: this.store.userId,})
+      .then((response) => {
+        if (response.data.success) {
+            this.weeklyGraph=response.data.weekly;
+            this.monthlyGraph=response.data.monthly;
+            this.showWeekly = true; //display weekly as default graph on page load
+            this.showMonthly = false;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+
+  mounted() {
+    this.showWeeklyGraph();
+    this.showMonthlyGraph();
+  },
+
   methods: {
     goBack() {
       this.$router.push("/home");
+    },
+
+    showMonthlyGraph() {
+      this.showMonthly = true;
+      this.showWeekly = false;
+    },
+
+    showWeeklyGraph() {
+      this.showMonthly = false;
+      this.showWeekly = true;
     },
   },
 }
@@ -52,30 +103,14 @@ export default {
 #charts-container {
   background-image: url("../assets/set_1/login_background.png");
   background-repeat: repeat-y;
-  /* display: flex; */
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
 }
 
-.ChartsPage {
-  max-height: 100px;
+.title {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -50px;
+  color: #066284;
 }
-
-#title {
-  font-size: 3rem;
-  /* padding: 0rem; */
-  text-align: center;
-}
-
-#graph {
-  min-width: 50%;
-  object-fit: contain;
-  vertical-align: middle;
-  max-width: 400px;
-  max-height: 400px;
-  width: auto;
-  height: auto;
-}
-
 </style>

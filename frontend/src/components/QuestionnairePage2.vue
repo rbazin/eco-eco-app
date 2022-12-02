@@ -92,7 +92,7 @@ export default {
         .then((response) => {
           if (response.data.status === "success") {
             this.store.userFrequenciesOfTransport = this.frequenciesOfPlaces;
-            this.$router.push("/home");
+            this.$router.push("/tutorial");
           }
         })
         .catch((error) => {
