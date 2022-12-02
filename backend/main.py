@@ -504,16 +504,25 @@ def friend_profile():
     if request.method == 'POST':
         response_object['success']= True
         data=request.get_json()
-        user_id=data['userId']
-        friend_id=data['friendId']
+        user_id=data['UserId']
+        friend_id=int(data['FriendId'])
         friend=User.query.get(friend_id)
         friend_data=UserData.query.get(friend_id)
         response_object['FriendId']=friend_id
         response_object['FriendName']=friend.name
         response_object['Droplets']=friend_data.droplets
-        response_object['Streaks']=friend_data.streak
+        response_object['Streak']=friend_data.streak
         badges = Badges.query.filter(Badges.id.in_(friend_data.badges)).all()
-        response_object['Badges']=[b.badge for b in badges]
+        badges_list=[]
+        for b in badges:
+            badges_list.append(
+                {
+                    "BadgeId":b.id,
+                    "BadgeName":b.badge,
+                    "Possessed": True if b.id in friend_data.badges else False
+                }
+            )
+        response_object["Badges"] =badges_list
         return response_object
 
 
